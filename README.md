@@ -1,4 +1,5 @@
-#Idiegti nauja projektą:
+Idiegti nauja projekta:<br>
+-----------------------
 
 git clone https://github.com/isProjektuValdymas/dienynas.git
 
