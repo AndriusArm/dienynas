@@ -1,0 +1,66 @@
+table.meniu {
+    text-align: center;
+    background-color:#ff9933;
+    border:3px solid black;
+}
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: black;
+    padding: 1px;
+    background-color: #999966;                
+}
+table.backlink {  
+    margin-left:auto; 
+    margin-right:auto;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border-width: 13px;
+    border-style: solid;
+    border-color: yellow;    
+    background-color: grey;   
+}
+body {
+    text-align:center;
+}   
+form.login {
+    margin-bottom:0;
+    padding:6px; 
+    background-color:light grey; 
+    border:3px dashed grey;               
+}
+input.s1 {   
+    width:100%;
+    font-size:13pt;
+    text-align:left;
+}
+
+/* The alert message box */
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
