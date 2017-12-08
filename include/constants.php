@@ -14,7 +14,7 @@
 define("DB_SERVER", "localhost");
 define("DB_USER", "root");
 define("DB_PASS", "");
-define("DB_NAME", "andarm");
+define("DB_NAME", "dienynas2");
 
 /**
  * Database Table Constants - these constants
