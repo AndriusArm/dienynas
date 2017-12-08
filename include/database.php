@@ -51,7 +51,7 @@ class MySQLDB {
         }
 
         /* Verify that user is in database */
-        $q = "SELECT password FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT slaptazodis FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         if (!$result || (mysqli_num_rows($result) < 1)) {
             return 1; //Indicates username failure
@@ -59,11 +59,11 @@ class MySQLDB {
 
         /* Retrieve password from result, strip slashes */
         $dbarray = mysqli_fetch_array($result);
-        $dbarray['password'] = stripslashes($dbarray['password']);
+        $dbarray['slaptazodis'] = stripslashes($dbarray['slaptazodis']);
         $password = stripslashes($password);
 
         /* Validate that password is correct */
-        if ($password === $dbarray['password']) {
+        if ($password === $dbarray['slaptazodis']) {
             return 0; //Success! Username and password confirmed
         } else {
             return 2; //Indicates password failure
@@ -85,7 +85,7 @@ class MySQLDB {
         }
 
         /* Verify that user is in database */
-        $q = "SELECT userid FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT id_Vartotojas FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         if (!$result || (mysqli_num_rows($result) < 1)) {
             return 1; //Indicates username failure
@@ -93,11 +93,11 @@ class MySQLDB {
 
         /* Retrieve userid from result, strip slashes */
         $dbarray = mysqli_fetch_array($result);
-        $dbarray['userid'] = stripslashes($dbarray['userid']);
+        $dbarray['id_Vartotojas'] = stripslashes($dbarray['id_Vartotojas']);
         $userid = stripslashes($userid);
 
         /* Validate that userid is correct */
-        if ($userid == $dbarray['userid']) {
+        if ($userid == $dbarray['id_Vartotojas']) {
             return 0; //Success! Username and userid confirmed
         } else {
             return 2; //Indicates userid invalid
@@ -112,7 +112,7 @@ class MySQLDB {
         if (!get_magic_quotes_gpc()) {
             $username = addslashes($username);
         }
-        $q = "SELECT username FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT prisijungimoVardas FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         return (mysqli_num_rows($result) > 0);
     }
@@ -152,7 +152,7 @@ class MySQLDB {
      * parameter, in the user's row of the database.
      */
     function updateUserField($username, $field, $value) {
-        $q = "UPDATE " . TBL_USERS . " SET " . $field . " = '$value' WHERE username = '$username'";
+        $q = "UPDATE " . TBL_USERS . " SET " . $field . " = '$value' WHERE prisijungimoVardas = '$username'";
         return mysqli_query($this->connection, $q);
     }
 
@@ -162,7 +162,7 @@ class MySQLDB {
      * the given username. If query fails, NULL is returned.
      */
     function getUserInfo($username) {
-        $q = "SELECT * FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT * FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         /* Error occurred, return given name by default */
         if (!$result || (mysqli_num_rows($result) < 1)) {
@@ -223,6 +223,7 @@ class MySQLDB {
      * in the database, and also adds him to the table of
      * active users, or updates timestamp if already there.
      */
+	 /*
     function addActiveUser($username, $time) {
         $q = "UPDATE " . TBL_USERS . " SET timestamp = '$time' WHERE username = '$username'";
         mysqli_query($this->connection, $q);
@@ -231,8 +232,9 @@ class MySQLDB {
             return;
         $q = "REPLACE INTO " . TBL_ACTIVE_USERS . " VALUES ('$username', '$time')";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveUsers();
+        //$this->calcNumActiveUsers();
     }
+	*/
 
     /* addActiveGuest - Adds guest to active guests table */
 /*
@@ -247,7 +249,7 @@ class MySQLDB {
     /* These functions are self explanatory, no need for comments */
 
     /* removeActiveUser */
-
+/*
     function removeActiveUser($username) {
         if (!TRACK_VISITORS)
             return;
@@ -255,19 +257,20 @@ class MySQLDB {
         mysqli_query($this->connection, $q);
         $this->calcNumActiveUsers();
     }
-
+*/
     /* removeActiveGuest */
-
+/*
     function removeActiveGuest($ip) {
         if (!TRACK_VISITORS)
             return;
         $q = "DELETE FROM " . TBL_ACTIVE_GUESTS . " WHERE ip = '$ip'";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveGuests();
+        //$this->calcNumActiveGuests();
+        //$this->calcNumActiveGuests();
     }
-
+*/
     /* removeInactiveUsers */
-
+/*
     function removeInactiveUsers() {
         if (!TRACK_VISITORS)
             return;
@@ -276,9 +279,9 @@ class MySQLDB {
         mysqli_query($this->connection, $q);
         //$this->calcNumActiveUsers();
     }
-
+*/
     /* removeInactiveGuests */
-
+/*
     function removeInactiveGuests() {
         if (!TRACK_VISITORS)
             return;
@@ -287,6 +290,7 @@ class MySQLDB {
         mysqli_query($this->connection, $q);
         //$this->calcNumActiveGuests();
     }
+	*/
 
     /**
      * query - Performs the given query on the database and

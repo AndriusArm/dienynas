@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017 m. Grd 08 d. 18:12
+-- Generation Time: 2017 m. Grd 08 d. 22:41
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -37,7 +37,6 @@ CREATE TABLE `administratorius` (
 --
 
 INSERT INTO `administratorius` (`id_Vartotojas`) VALUES
-(0),
 (1);
 
 -- --------------------------------------------------------
@@ -217,19 +216,20 @@ CREATE TABLE `vartotojas` (
   `vardas` varchar(255) DEFAULT NULL,
   `pavarde` varchar(255) DEFAULT NULL,
   `busena` char(9) DEFAULT NULL,
-  `id_Vartotojas` int(11) NOT NULL
+  `id_Vartotojas` int(11) NOT NULL,
+  `lygis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Sukurta duomenų kopija lentelei `vartotojas`
 --
 
-INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavarde`, `busena`, `id_Vartotojas`) VALUES
-('admin', 'demo', 'admin', 'admin', 'aktyvus', 0),
-('admin', 'demo', 'admin', 'admin', 'aktyvus', 1),
-('mokytojas', 'demo', 'Mokytojas', 'Antanas', 'aktyvus', 2),
-('mokinys', 'demo', 'Mokinys', 'Juozas', 'aktyvus', 3),
-('tevas', 'demo', 'Tevas', 'Jonas', 'aktyvus', 4);
+INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavarde`, `busena`, `id_Vartotojas`, `lygis`) VALUES
+('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9),
+('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5),
+('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1),
+('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 1),
+('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -337,7 +337,8 @@ ALTER TABLE `pazymys`
 -- Indexes for table `vartotojas`
 --
 ALTER TABLE `vartotojas`
-  ADD PRIMARY KEY (`id_Vartotojas`);
+  ADD PRIMARY KEY (`id_Vartotojas`),
+  ADD UNIQUE KEY `prisijungimoVardas` (`prisijungimoVardas`);
 
 --
 -- Indexes for table `zinute`

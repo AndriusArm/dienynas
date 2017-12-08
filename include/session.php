@@ -49,14 +49,15 @@ class Session {
             $this->username = $_SESSION['username'] = GUEST_NAME;
             $this->userlevel = GUEST_LEVEL;
             //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
+            //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
         }
         /* Update users last active timestamp */ else {
             $database->addActiveUser($this->username, $this->time);
         }
 
         /* Remove inactive visitors from database */
-        $database->removeInactiveUsers();
-        $database->removeInactiveGuests();
+        //$database->removeInactiveUsers();
+        //$database->removeInactiveGuests();
 
         /* Set referrer page */
         if (isset($_SESSION['url'])) {
@@ -97,9 +98,9 @@ class Session {
 
             /* User is logged in, set class variables */
             $this->userinfo = $database->getUserInfo($_SESSION['username']);
-            $this->username = $this->userinfo['username'];
-            $this->userid = $this->userinfo['userid'];
-            $this->userlevel = $this->userinfo['userlevel'];
+            $this->username = $this->userinfo['prisijungimoVardas'];
+            $this->userid = $this->userinfo['id_Vartotojas'];
+            $this->userlevel = $this->userinfo['lygis'];
             return true;
         }
 
@@ -160,14 +161,14 @@ class Session {
 
         /* Username and password correct, register session variables */
         $this->userinfo = $database->getUserInfo($subuser);
-        $this->username = $_SESSION['username'] = $this->userinfo['username'];
+        $this->username = $_SESSION['username'] = $this->userinfo['prisijungimoVardas'];
         $this->userid = $_SESSION['userid'] = $this->generateRandID();
-        $this->userlevel = $this->userinfo['userlevel'];
+        $this->userlevel = $this->userinfo['lygis'];
 
         /* Insert userid into database and update active users table */
         $database->updateUserField($this->username, "userid", $this->userid);
-        $database->addActiveUser($this->username, $this->time);
-        $database->removeActiveGuest($_SERVER['REMOTE_ADDR']);
+        //$database->addActiveUser($this->username, $this->time);
+        //$database->removeActiveGuest($_SERVER['REMOTE_ADDR']);
 
         /**
          * This is the cool part: the user has requested that we remember that
