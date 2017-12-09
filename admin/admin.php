@@ -99,7 +99,7 @@ function displayBannedUsers() {
     echo "</table><br>\n";
 }
 
-function ViewActiveUsers() {
+/*function ViewActiveUsers() {
     global $database;
     if (!defined('TBL_ACTIVE_USERS')) {
         die("");
@@ -107,12 +107,12 @@ function ViewActiveUsers() {
     $q = "SELECT username FROM " . TBL_ACTIVE_USERS
             . " ORDER BY timestamp DESC,username";
     $result = $database->query($q);
-    /* Error occurred, return given name by default */
+
     $num_rows = mysqli_num_rows($result);
     if (!$result || ($num_rows < 0)) {
         echo "Error displaying info";
     } else if ($num_rows > 0) {
-        /* Display active users, with link to their info */
+       
         echo "<br><table border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n";
         echo "<tr><td><b>Vartotojų vardai</b></td></tr>";
         echo "<tr><td><font size=\"2\">\n";
@@ -125,11 +125,11 @@ function ViewActiveUsers() {
         echo ".";
         echo "</font></td></tr></table>";
     }
-}
+}*/
 
-if (!$session->isModeratorius()) {
+if (!$session->isAdministratorius()) {
     header("Location: ../index.php");
-} else { //Jei moderatorius
+} else { //Jei administratorius
     ?>
     <html>
         <head>  
@@ -278,45 +278,8 @@ if (!$session->isModeratorius()) {
                     </td></tr>
                         
                 <tr><td> 
-                        <h3>Šiuo metu prisijungę vartotojai:</h3>
-                        <?php
-                        ViewActiveUsers();
-                        ?>
-                <tr><td><hr></td></tr>
             </td></tr>
-        <tr>
-            <td>
-                <?php
-                /**
-                 * Delete Inactive Users
-                 */
-                ?>
-                <h3>Šalinti neaktyvius vartotojus</h3>
-                <table>
-                    <form action="adminprocess.php" method="POST">
-                        <tr><td>
-                                Neaktyvumo dienos:<br>
-                                <select name="inactdays">
-                                    <option value="3">3
-                                    <option value="7">7
-                                    <option value="14">14
-                                    <option value="30">30
-                                    <option value="100">100
-                                    <option value="365">365
-                                </select>
-                            </td>
-                            <td>
-                                <br>
-                                <input type="hidden" name="subdelinact" value="1">
-                                <input type="submit" value="Šalinti">
-                            </td>
-                    </form>
-                </table>
-            </td>
-        </tr>
-        
-    </table>
-    </td></tr>
+
     <?php
     echo "<tr><td>";
     include("../include/footer.php");
