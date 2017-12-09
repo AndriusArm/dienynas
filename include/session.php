@@ -214,8 +214,8 @@ class Session {
          * Remove from active users table and add to
          * active guests tables.
          */
-        $database->removeActiveUser($this->username);
-        $database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
+        //$database->removeActiveUser($this->username);
+        //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
 
         /* Set user level to guest */
         $this->username = GUEST_NAME;
