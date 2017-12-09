@@ -25,14 +25,15 @@ class MySQLDB {
          * until then, default value set.
          */
         $this->num_members = -1;
-
-        if (TRACK_VISITORS) {
-            /* Calculate number of users at site */
+/* Calculate number of users at site*/
+/* Calculate number of guests at site*/
+       /* if (TRACK_VISITORS) {
+            
             $this->calcNumActiveUsers();
 
-            /* Calculate number of guests at site */
+             
             $this->calcNumActiveGuests();
-        }
+        }*/
     }
 
     /**
@@ -50,7 +51,7 @@ class MySQLDB {
         }
 
         /* Verify that user is in database */
-        $q = "SELECT password FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT slaptazodis FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         if (!$result || (mysqli_num_rows($result) < 1)) {
             return 1; //Indicates username failure
@@ -58,11 +59,11 @@ class MySQLDB {
 
         /* Retrieve password from result, strip slashes */
         $dbarray = mysqli_fetch_array($result);
-        $dbarray['password'] = stripslashes($dbarray['password']);
+        $dbarray['slaptazodis'] = stripslashes($dbarray['slaptazodis']);
         $password = stripslashes($password);
 
         /* Validate that password is correct */
-        if ($password === $dbarray['password']) {
+        if ($password === $dbarray['slaptazodis']) {
             return 0; //Success! Username and password confirmed
         } else {
             return 2; //Indicates password failure
@@ -84,7 +85,7 @@ class MySQLDB {
         }
 
         /* Verify that user is in database */
-        $q = "SELECT userid FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT id_Vartotojas FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         if (!$result || (mysqli_num_rows($result) < 1)) {
             return 1; //Indicates username failure
@@ -92,11 +93,11 @@ class MySQLDB {
 
         /* Retrieve userid from result, strip slashes */
         $dbarray = mysqli_fetch_array($result);
-        $dbarray['userid'] = stripslashes($dbarray['userid']);
+        $dbarray['id_Vartotojas'] = stripslashes($dbarray['id_Vartotojas']);
         $userid = stripslashes($userid);
 
         /* Validate that userid is correct */
-        if ($userid == $dbarray['userid']) {
+        if ($userid == $dbarray['id_Vartotojas']) {
             return 0; //Success! Username and userid confirmed
         } else {
             return 2; //Indicates userid invalid
@@ -111,7 +112,7 @@ class MySQLDB {
         if (!get_magic_quotes_gpc()) {
             $username = addslashes($username);
         }
-        $q = "SELECT username FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT prisijungimoVardas FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         return (mysqli_num_rows($result) > 0);
     }
@@ -151,7 +152,7 @@ class MySQLDB {
      * parameter, in the user's row of the database.
      */
     function updateUserField($username, $field, $value) {
-        $q = "UPDATE " . TBL_USERS . " SET " . $field . " = '$value' WHERE username = '$username'";
+        $q = "UPDATE " . TBL_USERS . " SET " . $field . " = '$value' WHERE prisijungimoVardas = '$username'";
         return mysqli_query($this->connection, $q);
     }
 
@@ -161,7 +162,7 @@ class MySQLDB {
      * the given username. If query fails, NULL is returned.
      */
     function getUserInfo($username) {
-        $q = "SELECT * FROM " . TBL_USERS . " WHERE username = '$username'";
+        $q = "SELECT * FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         /* Error occurred, return given name by default */
         if (!$result || (mysqli_num_rows($result) < 1)) {
@@ -193,29 +194,36 @@ class MySQLDB {
      * calcNumActiveUsers - Finds out how many active users
      * are viewing site and sets class variable accordingly.
      */
+	
+	/* Calculate number of users at site*/
+	/*
     function calcNumActiveUsers() {
-        /* Calculate number of users at site */
+        
         $q = "SELECT * FROM " . TBL_ACTIVE_USERS;
         $result = mysqli_query($this->connection, $q);
         $this->num_active_users = mysqli_num_rows($result);
-    }
+    }*/
+	
 
     /**
      * calcNumActiveGuests - Finds out how many active guests
      * are viewing site and sets class variable accordingly.
      */
+	 /* Calculate number of guests at site */
+	 /*
     function calcNumActiveGuests() {
-        /* Calculate number of guests at site */
+        
         $q = "SELECT * FROM " . TBL_ACTIVE_GUESTS;
         $result = mysqli_query($this->connection, $q);
         $this->num_active_guests = mysqli_num_rows($result);
-    }
+    }*/
 
     /**
      * addActiveUser - Updates username's last active timestamp
      * in the database, and also adds him to the table of
      * active users, or updates timestamp if already there.
      */
+	 /*
     function addActiveUser($username, $time) {
         $q = "UPDATE " . TBL_USERS . " SET timestamp = '$time' WHERE username = '$username'";
         mysqli_query($this->connection, $q);
@@ -224,23 +232,24 @@ class MySQLDB {
             return;
         $q = "REPLACE INTO " . TBL_ACTIVE_USERS . " VALUES ('$username', '$time')";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveUsers();
+        //$this->calcNumActiveUsers();
     }
+	*/
 
     /* addActiveGuest - Adds guest to active guests table */
-
+/*
     function addActiveGuest($ip, $time) {
         if (!TRACK_VISITORS)
             return;
         $q = "REPLACE INTO " . TBL_ACTIVE_GUESTS . " VALUES ('$ip', '$time')";
         mysqli_query($this->connection, $q);
         $this->calcNumActiveGuests();
-    }
+    }*/
 
     /* These functions are self explanatory, no need for comments */
 
     /* removeActiveUser */
-
+/*
     function removeActiveUser($username) {
         if (!TRACK_VISITORS)
             return;
@@ -248,38 +257,40 @@ class MySQLDB {
         mysqli_query($this->connection, $q);
         $this->calcNumActiveUsers();
     }
-
+*/
     /* removeActiveGuest */
-
+/*
     function removeActiveGuest($ip) {
         if (!TRACK_VISITORS)
             return;
         $q = "DELETE FROM " . TBL_ACTIVE_GUESTS . " WHERE ip = '$ip'";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveGuests();
+        //$this->calcNumActiveGuests();
+        //$this->calcNumActiveGuests();
     }
-
+*/
     /* removeInactiveUsers */
-
+/*
     function removeInactiveUsers() {
         if (!TRACK_VISITORS)
             return;
         $timeout = time() - USER_TIMEOUT * 60;
         $q = "DELETE FROM " . TBL_ACTIVE_USERS . " WHERE timestamp < $timeout";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveUsers();
+        //$this->calcNumActiveUsers();
     }
-
+*/
     /* removeInactiveGuests */
-
+/*
     function removeInactiveGuests() {
         if (!TRACK_VISITORS)
             return;
         $timeout = time() - GUEST_TIMEOUT * 60;
         $q = "DELETE FROM " . TBL_ACTIVE_GUESTS . " WHERE timestamp < $timeout";
         mysqli_query($this->connection, $q);
-        $this->calcNumActiveGuests();
+        //$this->calcNumActiveGuests();
     }
+	*/
 
     /**
      * query - Performs the given query on the database and

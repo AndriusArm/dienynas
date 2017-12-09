@@ -14,14 +14,14 @@
 define("DB_SERVER", "localhost");
 define("DB_USER", "root");
 define("DB_PASS", "");
-define("DB_NAME", "andarm");
+define("DB_NAME", "dienynas2");
 
 /**
  * Database Table Constants - these constants
  * hold the names of all the database tables used
  * in the script.
  */
-define("TBL_USERS", "users");
+define("TBL_USERS", "vartotojas");
 define("TBL_ACTIVE_USERS", "active_users");
 define("TBL_ACTIVE_GUESTS", "active_guests");
 define("TBL_BANNED_USERS", "banned_users");
