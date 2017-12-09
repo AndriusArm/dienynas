@@ -395,7 +395,7 @@ class Session {
      * isAdmin - Returns true if currently logged in user is
      * an administrator, false otherwise.
      */
-    function isModeratorius() {
+    function isAdministratorius() {
         return ($this->userlevel == ADMIN_LEVEL ||
                 $this->username == ADMIN_NAME);
     }
