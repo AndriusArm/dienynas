@@ -49,11 +49,10 @@ class Session {
             $this->username = $_SESSION['username'] = GUEST_NAME;
             $this->userlevel = GUEST_LEVEL;
             //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
-            //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
         }
-        /* Update users last active timestamp */ else {
-            $database->addActiveUser($this->username, $this->time);
-        }
+        ///* Update users last active timestamp */ else {
+        //    $database->addActiveUser($this->username, $this->time);
+        //}
 
         /* Remove inactive visitors from database */
         //$database->removeInactiveUsers();

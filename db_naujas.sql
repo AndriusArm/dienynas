@@ -217,19 +217,20 @@ CREATE TABLE `vartotojas` (
   `pavarde` varchar(255) DEFAULT NULL,
   `busena` char(9) DEFAULT NULL,
   `id_Vartotojas` int(11) NOT NULL,
-  `lygis` int(11) NOT NULL
+  `lygis` int(11) NOT NULL,
+  `userid` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Sukurta duomenų kopija lentelei `vartotojas`
 --
 
-INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavarde`, `busena`, `id_Vartotojas`, `lygis`) VALUES
-('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9),
-('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5),
-('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1),
-('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 1),
-('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 5, 1);
+INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavarde`, `busena`, `id_Vartotojas`, `lygis`, `userid`) VALUES
+('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9, ''),
+('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5, ''),
+('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1, ''),
+('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 1, ''),
+('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 5, 1, '');
 
 -- --------------------------------------------------------
 

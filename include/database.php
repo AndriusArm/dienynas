@@ -61,7 +61,7 @@ class MySQLDB {
         $dbarray = mysqli_fetch_array($result);
         $dbarray['slaptazodis'] = stripslashes($dbarray['slaptazodis']);
         $password = stripslashes($password);
-
+		
         /* Validate that password is correct */
         if ($password === $dbarray['slaptazodis']) {
             return 0; //Success! Username and password confirmed
@@ -85,7 +85,7 @@ class MySQLDB {
         }
 
         /* Verify that user is in database */
-        $q = "SELECT id_Vartotojas FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
+        $q = "SELECT userid FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$username'";
         $result = mysqli_query($this->connection, $q);
         if (!$result || (mysqli_num_rows($result) < 1)) {
             return 1; //Indicates username failure
@@ -93,9 +93,8 @@ class MySQLDB {
 
         /* Retrieve userid from result, strip slashes */
         $dbarray = mysqli_fetch_array($result);
-        $dbarray['id_Vartotojas'] = stripslashes($dbarray['id_Vartotojas']);
+        $dbarray['id_Vartotojas'] = stripslashes($dbarray['userid']);
         $userid = stripslashes($userid);
-
         /* Validate that userid is correct */
         if ($userid == $dbarray['id_Vartotojas']) {
             return 0; //Success! Username and userid confirmed
