@@ -16,13 +16,15 @@ if (isset($session) && $session->logged_in) {
 		. "[<a href=\"" . $path . "naujienos.php\">Naujienos</a>] &nbsp;&nbsp;"
 		. "[<a href=\"" . $path . "profilis.php?user=$session->username\">Mano profilis</a>] &nbsp;&nbsp;"
         . "[<a href=\"" . $path . "paskyra.php\">Paskyra</a>] &nbsp;&nbsp;";
-		//Mokinio dienynas rodomas tik mokiniui
+		//Mokinio dienynas ir tvarkaraštis rodomas tik mokiniui
 		if ($session->isMokinys()) {
 			echo "[<a href=\"" . $path . "mano_dienynas.php\">Mano dienynas</a>] &nbsp;&nbsp;";
+			echo "[<a href=\"" . $path . "mokinio_tvarkarastis.php\">Mano tvarkaraštis</a>] &nbsp;&nbsp;";
 		}
-		//Mokytojo sąsaja rodoma tik mokytojui
+		//Mokytojo sąsaja ir tvarkaraštis rodoma tik mokytojui
 		if ($session->isMokytojas()) {
 			echo "[<a href=\"" . $path . "mano_mokiniai.php\">Mano mokiniai</a>] &nbsp;&nbsp;";
+			echo "[<a href=\"" . $path . "mokytojo_tvarkarastis.php\">Mano tvarkaraštis</a>] &nbsp;&nbsp;";
 		}
         //Moderatoriaus sąsaja rodoma tik moderatoriui
         if ($session->isModeratorius()) {
