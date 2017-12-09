@@ -160,7 +160,7 @@ INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavard
 ('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9, 'a4f566859679df4fd876f8df2399d8cb', 0),
 ('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5, '', 0),
 ('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1, '', 0),
-('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 1, '', 3),
+('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 3, '', 3),
 ('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 5, 9, '', 0);
 
 -- --------------------------------------------------------
