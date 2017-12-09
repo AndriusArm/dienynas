@@ -28,6 +28,7 @@ if (isset($session) && $session->logged_in) {
         //Administratoriaus sąsaja rodoma tik administratoriui
         if ($session->isAdministratorius()) {
             echo "[<a href=\"" . $path . "admin/admin.php\">Administratoriaus sąsaja</a>] &nbsp;&nbsp;";
+            echo "[<a href=\"" . $path . "admin/students.php\">Mokiniai</a>] &nbsp;&nbsp;";
         }
         echo "[<a href=\"" . $path . "process.php\">Atsijungti</a>]";
         echo "</td></tr>";
