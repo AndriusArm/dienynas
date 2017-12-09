@@ -8,7 +8,7 @@ class AdminProcess {
     function AdminProcess() {
         global $session;
         /* Make sure administrator is accessing page */
-        if (!$session->isModeratorius()) {
+        if (!$session->isAdministratorius()) {
             header("Location: ../index.php");
             return;
         }
@@ -19,9 +19,7 @@ class AdminProcess {
         /* Admin submitted delete user form */ else if (isset($_GET['d'])) {
             $this->procDeleteUser();
         }
-        /* Admin submitted delete inactive users form */ else if (isset($_POST['subdelinact'])) {
-            $this->procDeleteInactive();
-        }
+       
         /* Admin submitted ban user form */ else if (isset($_GET['b'])) {
             $this->procBanUser();
         }
@@ -77,21 +75,6 @@ class AdminProcess {
     }
 
     /**
-     * procDeleteInactive - All inactive users are deleted from
-     * the database, not including administrators. Inactivity
-     * is defined by the number of days specified that have
-     * gone by that the user has not logged in.
-     */
-    function procDeleteInactive() {
-        global $session, $database;
-        $inact_time = $session->time - $_POST['inactdays'] * 24 * 60 * 60;
-        $q = "DELETE FROM " . TBL_USERS . " WHERE timestamp < $inact_time "
-                . "AND userlevel != " . ADMIN_LEVEL;
-        $database->query($q);
-        header("Location: " . $session->referrer);
-    }
-
-    /**
      * procBanUser - If the submitted username is correct,
      * the user is banned from the member system, which entails
      * removing the username from the users table and adding
@@ -101,7 +84,6 @@ class AdminProcess {
         global $session, $database, $form;
         /* Username error checking */
         $subuser = $this->checkUsername("banuser");
-
         /* Errors exist, have user correct them */
         if ($form->num_errors > 0) {
             $_SESSION['value_array'] = $_POST;
@@ -109,10 +91,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Ban user from member system */ else {
-            $q = "DELETE FROM " . TBL_USERS . " WHERE username = '$subuser'";
-            $database->query($q);
-
-            $q = "INSERT INTO " . TBL_BANNED_USERS . " VALUES ('$subuser', $session->time)";
+            $q = "UPDATE " . TBL_USERS . " SET busena= 'blokuotas' WHERE username = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }
@@ -135,7 +114,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Delete user from database */ else {
-            $q = "DELETE FROM " . TBL_BANNED_USERS . " WHERE username = '$subuser'";
+            $q = "UPDATE " . TBL_USERS . " SET busena= 'aktyvus' WHERE username = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }

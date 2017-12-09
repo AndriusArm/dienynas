@@ -9,8 +9,8 @@ include("../include/session.php");
  */
 function displayUsers() {
     global $database;
-    $q = "SELECT username,userlevel,email,timestamp "
-            . "FROM " . TBL_USERS . " ORDER BY userlevel DESC,username";
+    $q = "SELECT prisijungimoVardas, lygis, vardas, pavarde "
+            . "FROM " . TBL_USERS . " ORDER BY lygis DESC,prisijungimoVardas";
     $result = $database->query($q);
     /* Error occurred, return given name by default */
     $num_rows = mysqli_num_rows($result);
@@ -24,11 +24,11 @@ function displayUsers() {
     }
     /* Display table contents */
     echo "<table align=\"left\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n";
-    echo "<tr><td><b>Vartotojo vardas</b></td><td><b>Lygis</b></td><td><b>E-paštas</b></td><td><b>Paskutinį kartą aktyvus</b></td><td><b>Veiksmai</b></td></tr>\n";
+    echo "<tr><td><b>Vartotojo vardas</b></td><td><b>Lygis</b></td><td><b>Vardas</b></td><td><b>Pavardė</b></td><td><b>Veiksmai</b></td></tr>\n";
     for ($i = 0; $i < $num_rows; $i++) {
         $uid =
-        $uname = mysqli_result($result, $i, "username");
-        $ulevel = mysqli_result($result, $i, "userlevel");
+        $uname = mysqli_result($result, $i, "prisijungimoVardas");
+        $ulevel = mysqli_result($result, $i, "lygis");
         $ulevelname = '';
         switch ($ulevel)
         {
@@ -45,8 +45,8 @@ function displayUsers() {
                 $ulevelname = 'Neegzistuojantis tipas';
         }
         
-        $email = mysqli_result($result, $i, "email");
-        $time = date("Y-m-d G:i", mysqli_result($result, $i, "timestamp"));
+        $vardas = mysqli_result($result, $i, "vardas");
+        $pavarde = mysqli_result($result, $i, "pavarde");
         $ulevelchange = '<form action="adminprocess.php" method="POST">
                         
                                 <input type="hidden" name="upduser" value="'.$uname.'">
@@ -59,7 +59,7 @@ function displayUsers() {
                                 
 
                     </form>';
-        echo "<tr><td>$uname</td><td>$ulevelchange</td><td>$email</td><td>$time</td><td><a href='AdminProcess.php?b=1&banuser=$uname' onclick='return confirm(\"Ar tikrai norite blokuoti?\");'>Blokuoti</a> | <a href='AdminProcess.php?d=1&deluser=$uname' onclick='return confirm(\"Ar tikrai norite trinti?\");'>Trinti</a></td></tr>\n";
+        echo "<tr><td>$uname</td><td>$ulevelchange</td><td>$vardas</td><td>$pavarde</td><td><a href='AdminProcess.php?b=1&banuser=$uname' onclick='return confirm(\"Ar tikrai norite blokuoti?\");'>Blokuoti</a> | <a href='AdminProcess.php?d=1&deluser=$uname' onclick='return confirm(\"Ar tikrai norite trinti?\");'>Trinti</a></td></tr>\n";
     }
     echo "</table><br>\n";
 }
@@ -75,8 +75,8 @@ function mysqli_result($res, $row, $field=0) {
  */
 function displayBannedUsers() {
     global $database;
-    $q = "SELECT username,timestamp "
-            . "FROM " . TBL_BANNED_USERS . " ORDER BY username";
+    $q = "SELECT prisijungimoVardas, busena "
+            . "FROM " . TBL_USERS . " WHERE busena = 'blokuotas' ORDER BY prisijungimoVardas";
     $result = $database->query($q);
     /* Error occurred, return given name by default */
     $num_rows = mysqli_num_rows($result);
@@ -90,11 +90,11 @@ function displayBannedUsers() {
     }
     /* Display table contents */
     echo "<table align=\"left\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n";
-    echo "<tr><td><b>Vartotojo vardas</b></td><td><b>Blokavimo laikas</b></td><td><b>Veiksmai</b></td></tr>\n";
+    echo "<tr><td><b>Vartotojo vardas</b></td><td><b>Būsena</b></td><td><b>Veiksmai</b></td></tr>\n";
     for ($i = 0; $i < $num_rows; $i++) {
-        $uname = mysqli_result($result, $i, "username");
-        $time = date("Y-m-d G:i", mysqli_result($result, $i, "timestamp"));
-        echo "<tr><td>$uname</td><td>$time</td><td><a href='AdminProcess.php?db=1&delbanuser=$uname' onclick='return confirm(\"Ar tikrai norite Šalinti?\");'>Šalinti</a></td></tr>\n";
+        $uname = mysqli_result($result, $i, "prisijungimoVardas");
+        $busena = mysqli_result($result, $i, "busena");
+        echo "<tr><td>$uname</td><td>$busena</td><td><a href='AdminProcess.php?db=1&delbanuser=$uname' onclick='return confirm(\"Ar tikrai norite atblokuoti?\");'>Atblokuoti</a></td></tr>\n";
     }
     echo "</table><br>\n";
 }
@@ -134,7 +134,7 @@ if (!$session->isAdministratorius()) {
     <html>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
-            <title>Moderatoriaus sąsaja</title>
+            <title>Administratoriaus sąsaja</title>
             <link href="../include/styles2.css" rel="stylesheet" type="text/css" />
         </head>  
         <body>
