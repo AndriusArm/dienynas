@@ -16,86 +16,85 @@ if ($session->logged_in) {
             <link href="include/styles2.css" rel="stylesheet" type="text/css" />
         </head>
         <body>
-		
             <table class="center"><tr><td>
                         <img src="pictures/top.jpg"/>
                     </td></tr><tr><td> 
                         <?php
                         include("include/meniu.php");
+                        $currentMonth = date("m");
+                        $currentYear = date("Y");
+                        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+                        //TODO show by month
+                        //$activeMonth
+                        $startDate = date("Y-m-01");
+                        $endDate = date("Y-m-t");
+                        $grades =[];
                         ?>                          
                         <br> 
                         <div style="text-align: center;color:green">     						
                             <h1>Mano dienynas</h1>
-						<?php
-				
-                ?>
 				<div class="container">
-                <table class="table table-bordered">
- 
+                <table class="table table-bordered"> 
                     <thead>
                     <tr>
-						<th rowspan="2">Nr.</th>
+			<th rowspan="2">Nr.</th>
                         <th rowspan="2">Pamoka</th>
-                        <th colspan="<?php echo 30?>">Diena</th>
+                        <th colspan="<?php echo $daysInMonth + 1?>">Diena</th>
                     </tr>
                     </thead>
  
                     <tbody>
-                    <?php
- 
-                   ?><tr><?php
-                       ?><td><?php echo ""; ?></td><?php
-					    ?><td><?php echo ""; ?></td><?php
-                   for($i = 1; $i <= 30; $i++)
-                   {
+                        <tr>
+                            <td><?php echo ""; ?></td>
+                            <td><?php echo ""; ?></td>
+                <?php
+                   //for($i = 1; $i <= 30; $i++)
+
+                   for($i = 1; $i <= $daysInMonth; $i++){
                        ?><td><?php echo $i; ?></td><?php
                    }
                    ?></tr><?php
-					$k = $session->userinfo["id_Vartotojas"];
-					$query2 = "SELECT * FROM `pamoka`, `mokinys_pamoka` WHERE `mokinys_pamoka`.fk_Mokinys=$k && `mokinys_pamoka`.fk_Pamoka=id_Pamoka";
-					$j=1;
-					$result = $database->query($query2);
-					
-                        while ($row = mysqli_fetch_array($result))
-                        {
-                            ?><tr><?php
-							?><td><?php echo $j; ?></td><?php
-							$j=$j+1;
-							?><td><?php echo $row['pavadinimas']; ?></td><?php
-							$id=$row['id_Pamoka'];
-							$query3 = "SELECT * FROM `irasas` WHERE fk_Mokinys=$k && fk_Pamoka=$id";
-							$result2 = $database->query($query3);
-							$ii = 0;
-							while ($row = mysqli_fetch_array($result2))
-							{
-								?><td><?php echo $row['pazymys']; ?></td><?php
-								$date = DateTime::createFromFormat("Y-m-d", $row['data']);
-								$date->format("d");
-								$ii=$ii+1;
-							}
-                           for($i = $ii+1; $i <= 30; $i++)
-                           {
-                               ?><td><?php
-                                  
-                                       
-                                    echo "";
-                                       
-                                  
-                               ?></td><?php
-                           }
-                           ?></tr><?php
-
-                       }
-                   ?>
+                        $userID = $session->userinfo["id_Vartotojas"];
+                        $markQuery = "SELECT pazymys.verte, lankomumas.data, pamoka.pavadinimas FROM pazymys, lankomumas, pamoka WHERE `pazymys`.`fk_KlasesPamoka` = `lankomumas`.`fk_KlasesPamoka` and lankomumas.fk_Mokinys = 3 and pamoka.id_Pamoka = pazymys.id_Pazymys
+order by pamoka.pavadinimas, lankomumas.data ASC";
+                        $no=1;
+                        $result = $database->query($markQuery);
+			$lastSubject = "";
+                        while ($row = mysqli_fetch_array($result)){
+                            if ($row['pavadinimas'] != $lastSubject && $lastSubject != ""){
+                                echo $lastSubject;
+                                echo "<tr><td>". $no++. "</td><td>$lastSubject</td>";
+                                for ($i = 1; $i <= $daysInMonth; $i++){
+                                    if(array_key_exists($i, $grades))
+                                      echo "<td>$grades[$i]</td>";
+                                    else
+                                      echo "<td></td>";
+                                }
+                                echo "</tr>";
+                                for ($i = 1; $i <= $daysInMonth; $i++)
+                                  unset($grades[$i]);
+                            }
+                            $day = date('j', strtotime($row['data']));
+                            $grades[$day] = $row['verte'];
+                            $lastSubject = $row['pavadinimas'];
+                        } 
+                        echo "<tr><td>". $no++. "</td><td>$lastSubject</td>";
+                        for ($i = 1; $i <= $daysInMonth; $i++){
+                            if(array_key_exists($i, $grades))
+                              echo "<td>$grades[$i]</td>";
+                            else
+                              echo "<td></td>";
+                        }
+                        echo "</tr>";
+                       ?>
                     </tbody>
- 
                 </table>
                 <?php
-                        include("include/footer.php");
-                        ?>
-                    </td></tr>      
+                    include("include/footer.php");
+                ?>
+                </td></tr>      
             </table>
-			</div>
+            </div>
         </body>
     </html>
     <?php
