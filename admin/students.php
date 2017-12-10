@@ -26,20 +26,48 @@ if (!$session->isAdministratorius()) {
                         include("../include/meniu.php");
                         ?>
                         <br> 
+<?php  
+$connect = mysqli_connect("localhost", "root", "", "dienynas2");
+if(isset($_POST["submit8"]))
+{
+ if($_FILES['file']['name'])
+ {
+  $filename = explode(".", $_FILES['file']['name']);
+  if($filename[1] == 'csv')
+  {
+   $handle = fopen($_FILES['file']['tmp_name'], "r");
+   while($data = fgetcsv($handle))
+   {
+    $item1 = mysqli_real_escape_string($connect, $data[0]);  
+                $item2 = mysqli_real_escape_string($connect, $data[1]);
+                $item3 = mysqli_real_escape_string($connect, $data[2]);
+                $item4 = mysqli_real_escape_string($connect, $data[3]);
+                $item5 = mysqli_real_escape_string($connect, $data[4]);
+                $item6 = mysqli_real_escape_string($connect, $data[5]);
+                $query = "INSERT into vartotojas (prisijungimoVardas, slaptazodis,vardas,pavarde,busena,lygis) values('$item1','$item2','$item3','$item4','$item5', '$item6')";
+                $id     = $database->query($query);
+   }
+   fclose($handle);
+   echo "<script>alert('Importavimas baigtas');</script>";
+  }
+ }
+}
+?>
                         <tr><td> 
+                        <fieldset>
                         <div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
                         <h3>Importuoti mokinių sąrašą</h3>
-                        <form>
-						  <div class="form-group">
-						    <label for="exampleFormControlFile1">Pasirinkite .csv failą</label>
-						    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-						  </div>
-						</form>
-                        <form action="" method="post">
-						<fieldset><legend></legend>
+						<form method="post" enctype="multipart/form-data">					   
+						    <label>Pasirinkite CSV failą:</label>
+						    <input type="file" name="file" />
+						    <br />
+						    <input type="submit" name="submit8" value="Importuoti" class="btn btn-info" />			   
+						  </form>
 
+						<legend></legend>
+						<form action="" method="post">
 							<?php
 							  if(isset($_POST['save2']))
 							{
@@ -51,9 +79,10 @@ if (!$session->isAdministratorius()) {
 
 							<form action="" method="post"> 
 							<label id="first"> Klasė:</label><br/>
-							<input type="text" name=klasesPavadinimas><br/>
-							<button type="submit" class="btn btn-primary" name="save2">Pridėti naują</button>
-							</form>
+							<input type="text" name=klasesPavadinimas placeholder="įveskite klasės pavadinimą.."><br/>
+							<br />
+							<button type="submit" class="btn btn-info" name="save2">Pridėti naują</button>
+						</form>
 
 
 					<h2>Pasirinkite klasę</h2>
@@ -61,18 +90,10 @@ if (!$session->isAdministratorius()) {
 					   <?php
 						if(isset($_POST['klase'])){
     					$selectOption = $_POST['klase'];
-    					switch ($selectOption) {
-       						 case 'value1':
-          					  echo 'this is value1<br/>';
-          					  break;
-							        case 'value2':
-							            echo 'value2<br/>';
-							            break;
-							        default:
-							            # code...
-							            break;
-							    }
-							}
+						}
+						?> 
+						<form action="" method="post">
+						<?php
 							$query6 = "SELECT * from klase";
 							echo'<select class= "custom-select" name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
@@ -85,12 +106,12 @@ if (!$session->isAdministratorius()) {
 							<?php }
 							echo '</div>';
 							echo'<input type="submit" class="btn btn-primary" value="Ieškoti.."/>';
-							?>	
+						?>	
 							</select>
-							</form>
-							<br><br>
-											
+						</form>
+									
 						</fieldset>
+
 						<legend></legend>
  						 <h2>Mokinių sąrašas</h2>
   							<p>Pasirinktos klasės mokinių sąrašas:</p>         
@@ -99,7 +120,7 @@ if (!$session->isAdministratorius()) {
            						<div class="panel-body">
                					<table class="table table-fixed table-hover table-striped table-bordered">
                					<thead>
-				  				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
+				  				  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
 				  				  <p></p> 
 				  				 
 									<div class="modal fade" id="modal-1">
