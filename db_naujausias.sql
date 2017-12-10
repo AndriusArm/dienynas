@@ -369,12 +369,48 @@ ALTER TABLE `atsiskaitymas`
 --
 ALTER TABLE `irasas`
   MODIFY `id_Irasas` int(11) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `klase`
+--
+ALTER TABLE `klase`
+  MODIFY `id_Klase` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `klasespamoka`
+--
+ALTER TABLE `klasespamoka`
+  MODIFY `id_Klasespamoka` int(11) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `lankomumas`
+--
+ALTER TABLE `lankomumas`
+  MODIFY `id_Lankomumas` int(11) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `pamoka`
+--
+ALTER TABLE `pamoka`
+  MODIFY `id_Pamoka` int(11) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `pamokoslaikas`
+--
+ALTER TABLE `pamokoslaikas`
+  MODIFY `id_Pamokoslaikas` int(11) NOT NULL AUTO_INCREMENT;
+  
 --
 -- AUTO_INCREMENT for table `pazymys`
 --
 ALTER TABLE `pazymys`
   MODIFY `id_Pazymys` int(11) NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT for table `vartotojas`
+--
+ALTER TABLE `vartotojas`
+  MODIFY `id_Vartotojas` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zinute`
