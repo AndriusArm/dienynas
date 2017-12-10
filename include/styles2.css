@@ -64,3 +64,7 @@ input.s1 {
 .closebtn:hover {
     color: black;
 }
+.scroll-table{
+       height: 50px;
+       overflow: auto;
+}

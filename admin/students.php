@@ -26,45 +26,13 @@ if (!$session->isAdministratorius()) {
                         include("../include/meniu.php");
                         ?>
                         <br> 
-<?php  
-$connect = mysqli_connect("localhost", "root", "", "dienynas2");
-if(isset($_POST["submit8"]))
-{
- if($_FILES['file']['name'])
- {
-  $filename = explode(".", $_FILES['file']['name']);
-  if($filename[1] == 'csv')
-  {
-   $handle = fopen($_FILES['file']['tmp_name'], "r");
-   while($data = fgetcsv($handle))
-   {
-    $item1 = mysqli_real_escape_string($connect, $data[0]);  
-                $item2 = mysqli_real_escape_string($connect, $data[1]);
-                $item3 = mysqli_real_escape_string($connect, $data[2]);
-                $item4 = mysqli_real_escape_string($connect, $data[3]);
-                $item5 = mysqli_real_escape_string($connect, $data[4]);
-                $item6 = mysqli_real_escape_string($connect, $data[5]);
-                $query = "INSERT into vartotojas (prisijungimoVardas, slaptazodis,vardas,pavarde,busena,lygis) values('$item1','$item2','$item3','$item4','$item5', '$item6')";
-                $id     = $database->query($query);
-   }
-   fclose($handle);
-   echo "<script>alert('Importavimas baigtas');</script>";
-  }
- }
-}
-?>
+
                         <tr><td> 
                         <fieldset>
                         <div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
-                        <h3>Importuoti mokinių sąrašą</h3>
-						<form method="post" enctype="multipart/form-data">					   
-						    <label>Pasirinkite CSV failą:</label>
-						    <input type="file" name="file" />
-						    <br />
-						    <input type="submit" name="submit8" value="Importuoti" class="btn btn-info" />			   
-						  </form>
+                      
 
 						<legend></legend>
 						<form action="" method="post">
@@ -78,7 +46,8 @@ if(isset($_POST["submit8"]))
 							?>
 
 							<form action="" method="post"> 
-							<label id="first"> Klasė:</label><br/>
+							 <h2>Klasių valdymas</h2>
+  							<p>Sukurti naują klasę:</p>   
 							<input type="text" name=klasesPavadinimas placeholder="įveskite klasės pavadinimą.."><br/>
 							<br />
 							<button type="submit" class="btn btn-info" name="save2">Pridėti naują</button>
@@ -108,21 +77,25 @@ if(isset($_POST["submit8"]))
 							echo'<input type="submit" class="btn btn-primary" value="Ieškoti.."/>';
 						?>	
 							</select>
-						</form>
+						
 									
 						</fieldset>
 
 						<legend></legend>
+						<div class="row">
+        				<div class="col-md-12">
+           				<div class="panel-body">
  						 <h2>Mokinių sąrašas</h2>
   							<p>Pasirinktos klasės mokinių sąrašas:</p>         
 							 <div class="row">
         						<div class="col-md-12">
            						<div class="panel-body">
+           						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
+           						<div class=scroll style='overflow: auto;height: 250px; width: 950px;'>
                					<table class="table table-fixed table-hover table-striped table-bordered">
                					<thead>
-				  				  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
 				  				  <p></p> 
-				  				 
+				  				 <div></div>
 									<div class="modal fade" id="modal-1">
 										<div class="modal-dialog modal-lg">
 											<div class="modal-content">
@@ -208,9 +181,8 @@ if(isset($_POST["submit8"]))
 										          </div>
 												 </div>
 												  </form>
-										    </div>
-										    </div>
-										    </div>
+							</div>
+							</div> 
 							</div>
 							</div>
 							</div> 
@@ -235,15 +207,78 @@ if(isset($_POST["submit8"]))
 									<?php } ?>
 								    </tbody>
 								  </table>
-								</div>
-								</div>
-								</div>
+
 							</form>
-               <tr><td><hr></td></tr>
-            </td></tr>
-    </td></tr>
+
+
+    <?php  
+		$connect = mysqli_connect("localhost", "root", "", "dienynas2");
+		if(isset($_POST["submit8"]))
+		{
+		 if($_FILES['file']['name'])
+		 {
+		  $filename = explode(".", $_FILES['file']['name']);
+		  if($filename[1] == 'csv')
+		  {
+		   $handle = fopen($_FILES['file']['tmp_name'], "r");
+		   while($data = fgetcsv($handle))
+		   {
+		    $item1 = mysqli_real_escape_string($connect, $data[0]);  
+		                $item2 = mysqli_real_escape_string($connect, $data[1]);
+		                $item3 = mysqli_real_escape_string($connect, $data[2]);
+		                $item4 = mysqli_real_escape_string($connect, $data[3]);
+		                $item5 = mysqli_real_escape_string($connect, $data[4]);
+		                $item6 = mysqli_real_escape_string($connect, $data[5]);
+		                $item7 = mysqli_real_escape_string($connect, $data[6]);
+		                $item8 = mysqli_real_escape_string($connect, $data[7]);
+		                $query = "INSERT into vartotojas (prisijungimoVardas, slaptazodis,vardas,pavarde,busena,lygis) values('$item1','$item2','$item3','$item4','$item5', '$item6')";
+		                $id    = $database->query($query);
+		                
+		                //paimamas ką tik sukurto vartotojo ID
+						$SQL    = "SELECT MAX(id_Vartotojas) as id_Vartotojas FROM vartotojas";
+						$id     = $database->query($SQL);
+						$row2   = mysqli_fetch_assoc($id);
+
+		             	//išrenkamas klasės ID
+						$selectOptionCSV = $_POST['klase2'];
+						$sqlCSV ="SELECT id_Klase FROM klase WHERE klase='$selectOption'";
+						$klaseCSV = $database->query($sqlCSV);
+						$rowCSV    =mysqli_fetch_assoc($klaseCSV);
+
+						//išrenkamas tėvo ID
+						/*$tevas = $_POST['tevass'];
+						$strSQL1 ="SELECT id_Vartotojas FROM vartotojas WHERE vardas='$tevas'";
+						$klase3 = $database->query($strSQL1);
+						$row4    =mysqli_fetch_assoc($klase3);*/
+
+						//sukuriamas mokinys
+						$sql    = "INSERT INTO mokinys (id_Vartotojas, fk_Klase, fk_MokinioTevas)
+						VALUES ('".$row2['id_Vartotojas']."','$item8', '$item7')";
+						$result = $database->query($sql);
+		   }
+		   fclose($handle);
+		   echo "<script>alert('Importavimas baigtas');</script>";
+		  }
+		 }
+		}
+		?>
+                        <tr><td> 
+                        <div class="row">
+        				<div class="col-md-12">
+           				<div class="panel-body">
+                        <h3>Importuoti mokinių sąrašą</h3>
+						<form method="post" enctype="multipart/form-data">					   
+						    <label>Pasirinkite CSV failą:</label>
+						    <input type="file" name="file" />
+						    <br />
+						    <input type="submit" name="submit8" value="Importuoti" class="btn btn-info" />			   
+						  </form>
+						  </div>
+						  </div>
+						  </div>
    
     </td></tr>
+    </form>
     <?php
     echo "<tr><td>";
     include("../include/footer.php");
