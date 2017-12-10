@@ -56,12 +56,9 @@ if (!$session->isAdministratorius()) {
 							</form>
 
 
-							<h2>Pasirinkite klasę</h2>
-
+					<h2>Pasirinkite klasę</h2>
 					<label for="recipient-name" class="form-control-label">Klasė</label>
 					   <?php
-					   
-						$query6 = "SELECT * from klase";	
 						if(isset($_POST['klase'])){
     					$selectOption = $_POST['klase'];
     					switch ($selectOption) {
@@ -74,17 +71,9 @@ if (!$session->isAdministratorius()) {
 							        default:
 							            # code...
 							            break;
-
-							            	//echo <option value='".$row['klase']."'>.$row['klase']."</option>";
-
-							            	/*<option value='".$row['klase']."' 
-											<?php
-											 if(isset($_POST['klase']) && $_POST['klase'] == $row['klase'])
-											  echo 'selected="selected"'; 
-											?>><?php echo $row['klase']?></option>*/
 							    }
 							}
-
+							$query6 = "SELECT * from klase";
 							echo'<select class= "custom-select" name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
 							$klas = $database->query($query6);
@@ -124,8 +113,8 @@ if (!$session->isAdministratorius()) {
 													  if(isset($_POST['save']))
 													{
 														//sukuriamas vartotojas
-													    $sql    = "INSERT INTO vartotojas (prisijungimoVardas, slaptazodis, vardas, pavarde)
-													    VALUES ('".$_POST["vartotojoVardas"]."','".$_POST["slaptazodis"]."','".$_POST["vardas"]."','".$_POST["pavarde"]."')";
+													    $sql    = "INSERT INTO vartotojas (prisijungimoVardas, slaptazodis, vardas, pavarde, lygis)
+													    VALUES ('".$_POST["vartotojoVardas"]."','".$_POST["slaptazodis"]."','".$_POST["vardas"]."','".$_POST["pavarde"]."', '1')";
 													    $result = $database->query($sql);
 
 													   	//paimamas ką tik sukurto vartotojo ID
@@ -139,9 +128,15 @@ if (!$session->isAdministratorius()) {
 													    $klase2 = $database->query($strSQL);
 													    $row    =mysqli_fetch_assoc($klase2);
 
+													    //išrenkamas tėvo ID
+													    $tevas = $_POST['tevass'];
+													    $strSQL1 ="SELECT id_Vartotojas FROM vartotojas WHERE vardas='$tevas'";
+													    $klase3 = $database->query($strSQL1);
+													    $row4    =mysqli_fetch_assoc($klase3);
+
 													    //sukuriamas mokinys
 													    $sql    = "INSERT INTO mokinys (id_Vartotojas, fk_Klase, fk_MokinioTevas)
-													    VALUES ('".$row2['id_Vartotojas']."','".$row['id_Klase']."','4')";
+													    VALUES ('".$row2['id_Vartotojas']."','".$row['id_Klase']."', '".$row4['id_Vartotojas']."')";
 													    $result = $database->query($sql);
 
 													}?>
@@ -167,11 +162,29 @@ if (!$session->isAdministratorius()) {
 										            <label for="recipient-name" class="form-control-label">Slaptažodis: </label>
 										            <input type="password" name="slaptazodis" class="form-control" id="inputPassword2" placeholder="Password">
 										          </div>
-										       
+												    <div class="form-group">
+												      <label for="inputState">Mokinio tėvas</label>
+												      <select id="inputState" class="form-control" name = tevass>
+												      <?php
+												      $query_tevas = "SELECT * from vartotojas WHERE lygis = '3'";
+												      $tev = $database->query($query_tevas);
+															while ( $row5=mysqli_fetch_assoc($tev)) {?>
+																	 <option value=<?php echo $row5['vardas'];
+																 if(isset($_POST['vardas']) && $_POST['vardas'] == $row5['vardas'])
+								 									echo 'selected="selected"';
+																 ?>><?php echo $row5['vardas'], ' ', $row5['pavarde'] ?></option>;
+															<?php }
+												       ?>
+												        <option selected>Pasirinkite...</option>										        
+											       <div class="form-group">
+										        <label for="recipient-name" class="form-control-label">Mokinio tėvas: </label>	
+												</select>								       
 										      </div>
 										      	 <div class="modal-footer">
 												 	<a href="" class="btn btn-default" data-dismiss="modal">Uždaryti</a>
 			   								 	    <button type="submit" class="btn btn-primary" name="save">Išsaugoti</button>
+			   								 	    </select>
+										          </div>
 												 </div>
 												  </form>
 										    </div>
