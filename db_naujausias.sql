@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017 m. Grd 08 d. 22:41
+-- Generation Time: 2017 m. Grd 10 d. 15:29
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -82,6 +82,21 @@ CREATE TABLE `klasespamoka` (
   `fk_Mokytojas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Sukurta duomenų kopija lentelei `klasespamoka`
+--
+
+INSERT INTO `klasespamoka` (`id_KlasesPamoka`, `fk_Pamoka`, `fk_Klase`, `fk_Mokytojas`) VALUES
+(1, 1, 1, 2),
+(2, 4, 1, 7),
+(3, 8, 1, 6),
+(4, 2, 1, 8),
+(5, 5, 1, 9),
+(6, 6, 1, 10),
+(7, 10, 1, 8),
+(9, 3, 1, 2),
+(10, 1, 1, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -93,7 +108,7 @@ CREATE TABLE `lankomumas` (
   `arBuvo` tinyint(1) DEFAULT NULL,
   `id_Lankomumas` int(11) NOT NULL,
   `fk_KlasesPamoka` int(11) NOT NULL,
-  `fk_Mokinys` int(11) NOT NULL 
+  `fk_Mokinys` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -105,7 +120,7 @@ CREATE TABLE `lankomumas` (
 CREATE TABLE `mokinys` (
   `id_Vartotojas` int(11) NOT NULL,
   `fk_Klase` int(11) NOT NULL,
-  `fk_MokinioTevas` int(11) NOT NULL 
+  `fk_MokinioTevas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -123,8 +138,26 @@ INSERT INTO `mokinys` (`id_Vartotojas`, `fk_Klase`, `fk_MokinioTevas`) VALUES
 
 CREATE TABLE `pamoka` (
   `pavadinimas` varchar(255) DEFAULT NULL,
-  `id_Pamoka` int(11) NOT NULL 
+  `id_Pamoka` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Sukurta duomenų kopija lentelei `pamoka`
+--
+
+INSERT INTO `pamoka` (`pavadinimas`, `id_Pamoka`) VALUES
+('Lietuvių kalba', 1),
+('Matematika', 2),
+('Fizika', 3),
+('Anglų kalba', 4),
+('Kūno kultūra', 5),
+('Chemija', 6),
+('Biologija', 7),
+('Rusų kalba', 8),
+('Vokiečių kalba', 9),
+('Geografija', 10),
+('Istorija', 11),
+('Ekonomika', 12);
 
 -- --------------------------------------------------------
 
@@ -140,6 +173,40 @@ CREATE TABLE `pamokoslaikas` (
   `fk_KlasesPamoka` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Sukurta duomenų kopija lentelei `pamokoslaikas`
+--
+
+INSERT INTO `pamokoslaikas` (`laikas`, `kabinetas`, `savaitesDiena`, `id_PamokosLaikas`, `fk_KlasesPamoka`) VALUES
+('08:00:00', '212', 'Pirmadienis', 1, 1),
+('09:00:00', '212', 'Pirmadienis', 2, 3),
+('10:00:00', '212', 'Pirmadienis', 3, 4),
+('11:00:00', '212', 'Pirmadienis', 4, 5),
+('13:00:00', '212', 'Pirmadienis', 6, 9),
+('14:00:00', '212', 'Pirmadienis', 7, 1),
+('15:00:00', '212', 'Pirmadienis', 8, 3),
+('09:00:00', '320', 'Antradienis', 10, 3),
+('10:00:00', '320', 'Antradienis', 11, 6),
+('11:00:00', '320', 'Antradienis', 12, 2),
+('12:00:00', '320', 'Antradienis', 13, 10),
+('08:00:00', '320', 'Antradienis', 14, 7),
+('08:00:00', '311', 'Trečiadienis', 15, 7),
+('09:00:00', '311', 'Trečiadienis', 16, 1),
+('10:00:00', '311', 'Trečiadienis', 17, 2),
+('11:00:00', '311', 'Trečiadienis', 18, 3),
+('12:00:00', '311', 'Trečiadienis', 19, 4),
+('13:00:00', '311', 'Trečiadienis', 20, 6),
+('08:00:00', '300', 'Ketvirtadienis', 21, 1),
+('09:00:00', '300', 'Ketvirtadienis', 22, 2),
+('10:00:00', '300', 'Ketvirtadienis', 23, 10),
+('11:00:00', '300', 'Ketvirtadienis', 24, 7),
+('12:00:00', '300', 'Ketvirtadienis', 25, 6),
+('13:00:00', '300', 'Ketvirtadienis', 26, 3),
+('08:00:00', '412', 'Penktadienis', 27, 1),
+('09:00:00', '412', 'Penktadienis', 28, 2),
+('10:00:00', '412', 'Penktadienis', 29, 3),
+('11:00:00', '412', 'Penktadienis', 30, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -149,7 +216,7 @@ CREATE TABLE `pamokoslaikas` (
 CREATE TABLE `pazymys` (
   `verte` int(11) DEFAULT NULL,
   `tipas` char(20) DEFAULT NULL,
-  `id_Pazymys` int(11) NOT NULL ,
+  `id_Pazymys` int(11) NOT NULL,
   `fk_Mokinys` int(11) NOT NULL,
   `fk_KlasesPamoka` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -176,11 +243,16 @@ CREATE TABLE `vartotojas` (
 --
 
 INSERT INTO `vartotojas` (`prisijungimoVardas`, `slaptazodis`, `vardas`, `pavarde`, `busena`, `id_Vartotojas`, `lygis`, `userid`) VALUES
-('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9, ''),
-('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5, ''),
-('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1, ''),
+('admin', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 1, 9, '8f2cc1153559970e28359ac4ead059fd'),
+('mokytojas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytojas', 'Antanas', 'aktyvus', 2, 5, '1325547c3179a81322b54c370d62b21a'),
+('mokinys', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokinys', 'Juozas', 'aktyvus', 3, 1, '67bc40396d94e50c1608c910381d6a12'),
 ('tevas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Tevas', 'Jonas', 'aktyvus', 4, 1, ''),
-('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'aktyvus', 5, 1, '');
+('adminas', 'fe01ce2a7fbac8fafaed7c982a04e229', 'admin', 'admin', 'blokuotas', 5, 9, ''),
+('mokytojas2', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytoja', 'Angelė', 'aktyvus', 6, 5, '414931a73d8b4651ed72836605a3a545'),
+('mokytojas3', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytoja', 'Anelė', 'aktyvus', 7, 5, 'd5fbe3a9e91d4d125312be5e283e5b9e'),
+('mokytojas4', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytoja', 'Dovilė', 'aktyvus', 8, 5, 'b07fa79970d3458277422a9813ee882c'),
+('mokytojas5', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytoja', 'Elena', 'aktyvus', 9, 5, '0af0829e5ee28e827b4b8bd0cfe2774e'),
+('mokytojas6', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Mokytoja', 'Rasa', 'aktyvus', 10, 5, '7fef9048a0e4e672f367591f90660f08');
 
 -- --------------------------------------------------------
 
@@ -227,7 +299,8 @@ ALTER TABLE `klase`
 ALTER TABLE `klasespamoka`
   ADD PRIMARY KEY (`id_KlasesPamoka`),
   ADD KEY `fk_Pamoka` (`fk_Pamoka`),
-  ADD KEY `fk_Klase` (`fk_Klase`);
+  ADD KEY `fk_Klase` (`fk_Klase`),
+  ADD KEY `klasespamoka_ibfk_3` (`fk_Mokytojas`);
 
 --
 -- Indexes for table `lankomumas`
@@ -285,16 +358,6 @@ ALTER TABLE `zinute`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `klase`
---
-ALTER TABLE `klase`
-  MODIFY `id_Klase` int(11) NOT NULL AUTO_INCREMENT;
-  --
--- AUTO_INCREMENT for table `klase`
---
-ALTER TABLE `vartotojas`
-  MODIFY `id_Vartotojas` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `atsiskaitymas`
 --

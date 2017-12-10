@@ -8,7 +8,7 @@ if (!$session->isAdministratorius()) {
     <html>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
-            <title>Administratoriaus sąsaja</title>
+            <title>Pamokų redagavimas</title>
             <link href="../include/styles2.css" rel="stylesheet" type="text/css" />
         </head>  
         <body>
