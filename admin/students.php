@@ -4,7 +4,7 @@ include("../include/session.php");
 $selectOption = '0';
 if (!$session->isAdministratorius()) {
     header("Location: ../index.php");
-} else { //Jei moderatorius
+} else { //Jei administratorius
     ?>
     <html>
         <head>  
@@ -48,6 +48,7 @@ if (!$session->isAdministratorius()) {
 							    $result = $database->query($sql);
 							}
 							?>
+
 							<form action="" method="post"> 
 							<label id="first"> Klasė:</label><br/>
 							<input type="text" name=klasesPavadinimas><br/>
@@ -55,11 +56,9 @@ if (!$session->isAdministratorius()) {
 							</form>
 
 
-							<h2>Pasirinkite klasę</h2>
-
+					<h2>Pasirinkite klasę</h2>
 					<label for="recipient-name" class="form-control-label">Klasė</label>
 					   <?php
-						$query6 = "SELECT * from klase";	
 						if(isset($_POST['klase'])){
     					$selectOption = $_POST['klase'];
     					switch ($selectOption) {
@@ -74,19 +73,22 @@ if (!$session->isAdministratorius()) {
 							            break;
 							    }
 							}
-							echo'<select clas= "custom-select" name="klase">';
+							$query6 = "SELECT * from klase";
+							echo'<select class= "custom-select" name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
 							$klas = $database->query($query6);
-							while ( $row=mysqli_fetch_assoc($klas)) {
-								echo "<option value='".$row['klase']."'>".$row['klase']."</option>";
-							}
+							while ( $row=mysqli_fetch_assoc($klas)) {?>
+								 <option value=<?php echo $row['klase'];
+								 if(isset($_POST['klase']) && $_POST['klase'] == $row['klase'])
+								 echo 'selected="selected"'; ?>
+								><?php echo $row['klase'] ?></option>;
+							<?php }
 							echo '</div>';
 							echo'<input type="submit" class="btn btn-primary" value="Ieškoti.."/>';
 							?>	
 							</select>
 							</form>
 							<br><br>
-
 											
 						</fieldset>
 						<legend></legend>
@@ -110,45 +112,79 @@ if (!$session->isAdministratorius()) {
 									 				<?php
 													  if(isset($_POST['save']))
 													{
-													    $sql = "INSERT INTO vartotojas (prisijungimoVardas, slaptazodis, vardas,pavarde)
-													    VALUES ('".$_POST["username3"]."','".$_POST["password"]."','".$_POST["username"]."','".$_POST["username2"]."')";
+														//sukuriamas vartotojas
+													    $sql    = "INSERT INTO vartotojas (prisijungimoVardas, slaptazodis, vardas, pavarde, lygis)
+													    VALUES ('".$_POST["vartotojoVardas"]."','".$_POST["slaptazodis"]."','".$_POST["vardas"]."','".$_POST["pavarde"]."', '1')";
 													    $result = $database->query($sql);
-													}
-													?>
+
+													   	//paimamas ką tik sukurto vartotojo ID
+													    $SQL    = "SELECT MAX(id_Vartotojas) as id_Vartotojas FROM vartotojas";
+													    $id     = $database->query($SQL);
+													    $row2   = mysqli_fetch_assoc($id);
+
+													    //išrenkamas klasės ID
+													    $selectOption2 = $_POST['klase2'];
+													    $strSQL ="SELECT id_Klase FROM klase WHERE klase='$selectOption2'";
+													    $klase2 = $database->query($strSQL);
+													    $row    =mysqli_fetch_assoc($klase2);
+
+													    //išrenkamas tėvo ID
+													    $tevas = $_POST['tevass'];
+													    $strSQL1 ="SELECT id_Vartotojas FROM vartotojas WHERE vardas='$tevas'";
+													    $klase3 = $database->query($strSQL1);
+													    $row4    =mysqli_fetch_assoc($klase3);
+
+													    //sukuriamas mokinys
+													    $sql    = "INSERT INTO mokinys (id_Vartotojas, fk_Klase, fk_MokinioTevas)
+													    VALUES ('".$row2['id_Vartotojas']."','".$row['id_Klase']."', '".$row4['id_Vartotojas']."')";
+													    $result = $database->query($sql);
+
+													}?>
 												 <form action="" method="post">
 												 <div class="modal-body">
 										          <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Vardas:</label>
-										            <input type="text" name="username" class="form-control" id="recipient-name">
+										            <input type="text" name="vardas" class="form-control" id="recipient-name">
 										          </div>
 										          <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Pavardė:</label>
-										            <input type="text" name="username2" class="form-control" id="recipient-name">
-										          </div>
-										          <div class="form-group">
-										            <label for="recipient-name" class="form-control-label">El.paštas:</label>
-										            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-										            <div class="input-group-addon">@</div>
-										            <input type="text" class="form-control" id="recipient-name" placeholder="vardas@gmail.com">
-										            </div>
+										            <input type="text" name="pavarde" class="form-control" id="recipient-name">
 										          </div>
 										          <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Klasė: </label>
-													      <p class="form-control-static"><?php echo $selectOption?></p>
+										            <input type="text" name="klase2" class="form-control" id="recipient-name" value=<?php echo $selectOption?> readonly="readonly">
 												  </div>
 										         <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Vartotojo vardas:</label>
-										            <input type="text" name="username2" class="form-control" id="recipient-name">
+										            <input type="text" name="vartotojoVardas" class="form-control" id="recipient-name">
 										          </div>
 										        <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Slaptažodis: </label>
-										            <input type="password" name="password" class="form-control" id="inputPassword2" placeholder="Password">
+										            <input type="password" name="slaptazodis" class="form-control" id="inputPassword2" placeholder="Password">
 										          </div>
-										       
+												    <div class="form-group">
+												      <label for="inputState">Mokinio tėvas</label>
+												      <select id="inputState" class="form-control" name = tevass>
+												      <?php
+												      $query_tevas = "SELECT * from vartotojas WHERE lygis = '3'";
+												      $tev = $database->query($query_tevas);
+															while ( $row5=mysqli_fetch_assoc($tev)) {?>
+																	 <option value=<?php echo $row5['vardas'];
+																 if(isset($_POST['vardas']) && $_POST['vardas'] == $row5['vardas'])
+								 									echo 'selected="selected"';
+																 ?>><?php echo $row5['vardas'], ' ', $row5['pavarde'] ?></option>;
+															<?php }
+												       ?>
+												        <option selected>Pasirinkite...</option>										        
+											       <div class="form-group">
+										        <label for="recipient-name" class="form-control-label">Mokinio tėvas: </label>	
+												</select>								       
 										      </div>
 										      	 <div class="modal-footer">
 												 	<a href="" class="btn btn-default" data-dismiss="modal">Uždaryti</a>
-			   								 	    <a href="" type="submit" name="save" class="btn btn-primary">Išsaugoti</a>
+			   								 	    <button type="submit" class="btn btn-primary" name="save">Išsaugoti</button>
+			   								 	    </select>
+										          </div>
 												 </div>
 												  </form>
 										    </div>
@@ -157,7 +193,7 @@ if (!$session->isAdministratorius()) {
 							</div>
 							</div>
 							</div> 
-									
+								
 								      <tr>
 								        <th>Vardas</th>
 								        <th>Pavardė</th>
@@ -173,6 +209,7 @@ if (!$session->isAdministratorius()) {
 								        <td><?php echo "<option value='".$row['vardas']."'>".$row['vardas']."</option>"; ?></td>
 								        <td><?php echo "<option value='".$row['pavarde']."'>".$row['pavarde']."</option>"; ?></td>
 								        <td><?php echo "<option value='".$row['klase']."'>".$row['klase']."</option>" ?></td>
+
 								        </tr>
 									<?php } ?>
 								    </tbody>
