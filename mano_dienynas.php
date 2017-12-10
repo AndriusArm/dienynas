@@ -1,5 +1,6 @@
 <?php
 include("include/session.php");
+include ("include/functions.php");
 if ($session->logged_in) {
     ?>
 	<head>  
@@ -28,7 +29,7 @@ if ($session->logged_in) {
                         //$activeMonth
                         $startDate = date("Y-m-01");
                         $endDate = date("Y-m-t");
-                        $grades =[];
+                        $grades =[];                             
                         ?>                          
                         <br> 
                         <div style="text-align: center;color:green">     						
@@ -55,21 +56,19 @@ if ($session->logged_in) {
                    }
                    ?></tr><?php
                         $userID = $session->userinfo["id_Vartotojas"];
-                        $markQuery = "SELECT pazymys.verte, lankomumas.data, pamoka.pavadinimas FROM pazymys, lankomumas, pamoka WHERE `pazymys`.`fk_KlasesPamoka` = `lankomumas`.`fk_KlasesPamoka` and lankomumas.fk_Mokinys = 3 and pamoka.id_Pamoka = pazymys.id_Pazymys
-order by pamoka.pavadinimas, lankomumas.data ASC";
+                        $markQuery = "SELECT pazymys.verte, lankomumas.data, pamoka.pavadinimas, lankomumas.arBuvo, pamoka.id_Pamoka "
+                                   . "FROM pazymys, lankomumas, pamoka "
+                                   . "WHERE `pazymys`.`fk_KlasesPamoka` = `lankomumas`.`fk_KlasesPamoka` "
+                                   . "and lankomumas.fk_Mokinys = $userID and pamoka.id_Pamoka = pazymys.id_Pazymys "
+                                   . "order by pamoka.pavadinimas, lankomumas.data ASC";
                         $no=1;
+                        
                         $result = $database->query($markQuery);
 			$lastSubject = "";
+                        $lastSubjectID = "";
                         while ($row = mysqli_fetch_array($result)){
                             if ($row['pavadinimas'] != $lastSubject && $lastSubject != ""){
-                                echo $lastSubject;
-                                echo "<tr><td>". $no++. "</td><td>$lastSubject</td>";
-                                for ($i = 1; $i <= $daysInMonth; $i++){
-                                    if(array_key_exists($i, $grades))
-                                      echo "<td>$grades[$i]</td>";
-                                    else
-                                      echo "<td></td>";
-                                }
+                                fillGrades($row, $userID, $lastSubject, $lastSubjectID, $no, $daysInMonth, $grades);
                                 echo "</tr>";
                                 for ($i = 1; $i <= $daysInMonth; $i++)
                                   unset($grades[$i]);
@@ -77,15 +76,9 @@ order by pamoka.pavadinimas, lankomumas.data ASC";
                             $day = date('j', strtotime($row['data']));
                             $grades[$day] = $row['verte'];
                             $lastSubject = $row['pavadinimas'];
-                        } 
-                        echo "<tr><td>". $no++. "</td><td>$lastSubject</td>";
-                        for ($i = 1; $i <= $daysInMonth; $i++){
-                            if(array_key_exists($i, $grades))
-                              echo "<td>$grades[$i]</td>";
-                            else
-                              echo "<td></td>";
+                            $lastSubjectID = $row['id_Pamoka'];
                         }
-                        echo "</tr>";
+                        fillGrades($row, $userID, $lastSubject, $lastSubjectID, $no, $daysInMonth, $grades);
                        ?>
                     </tbody>
                 </table>
