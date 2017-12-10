@@ -34,7 +34,7 @@ include("include/session.php");
 				}
 				?>
 				<?php
-				if ($session->logged_in && ($session->isModeratorius() || $session->isMokytojas()))
+				if ($session->logged_in && ($session->isAdministratorius() || $session->isMokytojas()))
 				{
 				?>
 				<div align="left">

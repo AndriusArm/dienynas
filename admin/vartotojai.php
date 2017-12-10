@@ -19,9 +19,7 @@ if (!$session->isAdministratorius()) {
                         $_SESSION['path'] = '../';
                         include("../include/meniu.php");
 						include("../include/admin_meniu.php");
-                        ?>
-                        <br> 
-<?php
+
 /**
  * displayUsers - Displays the users database table in
  * a nicely formatted html table.

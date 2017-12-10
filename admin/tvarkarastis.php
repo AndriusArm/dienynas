@@ -19,41 +19,15 @@ if (!$session->isAdministratorius()) {
                         $_SESSION['path'] = '../';
                         include("../include/meniu.php");
 						include("../include/admin_meniu.php");
-                        ?>
-                        <br> 
-                        <?php
-                        if ($form->num_errors > 0) {
-                            echo "<font size=\"4\" color=\"#ff0000\">"
-                            . "!*** Error with request, please fix</font><br><br>";
-                        }
-						if (isset ($_POST['submit'])){
-							$pavad = $_POST['pavadinimas'];
-							$m = $_POST['mokyt'];
-							if($pavad != '' & $m != 0){
-	
-							$query="INSERT INTO `pamoka` (pavadinimas, fk_Mokytojas) VALUES 
-							('$pavad', '$m')";
-							
-						$database->query($query);
-						} 	else {
-							?>
-								<div class="alert">
-								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-								Neįvesta informacija
-								</div>
-								<?php
-								}
-						}
-						
-							if (isset ($_POST['priskirti'])){
+
+						if (isset ($_POST['priskirti'])){
+							$klase = $_POST['klase'];
 							$pam = $_POST['pam'];
-							$mk = $_POST['mokin'];
-							if($pam != 0 & $mk!= 0){
-	
-							$query8="INSERT INTO `mokinys_pamoka` (fk_Mokinys, fk_Pamoka) VALUES 
-							('$mk', '$pam')";
-							
-							$database->query($query8);
+							$vart = $_POST['vart'];
+							if($pam != 0 & $klase!= 0 & $vart!= 0){
+							$query="INSERT INTO `klasespamoka` (fk_Klase, fk_Pamoka, fk_Mokytojas) VALUES 
+							('$klase', '$pam', '$vart')";
+							$database->query($query);
 						} 	else {
 							?>
 								<div class="alert">
@@ -63,64 +37,126 @@ if (!$session->isAdministratorius()) {
 								<?php
 								}
 						}
-                        ?>
 						
-                        <table style=" text-align:left;" border="0" cellspacing="5" cellpadding="5">
+						if (isset ($_POST['paskirti'])){
+							$klase = $_POST['klase'];
+							$kabinetas = $_POST['kabinetas'];
+							$laikas = $_POST['laikas'];
+							$diena = $_POST['diena'];
+							var_dump($klase);
+							var_dump($kabinetas);
+							var_dump($laikas);
+							var_dump($diena);
+							if($klase != 0 & $kabinetas != 0 & $laikas != 0 & $diena != 0){
+							$query="INSERT INTO `pamokoslaikas` (laikas, kabinetas, savaitesDiena, fk_Klasespamoka) VALUES 
+							('$laikas', '$kabinetas', '$diena', '$klase')";
+							$database->query($query);
+						} 	else {
+							?>
+								<div class="alert">
+								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+								Nepasirinkta pamoka, laikas, kabinetas arba savaitės diena
+								</div>
+								<?php
+								}
+						}
 						
-						<tr><td> 
-                        <h3>Priskirti mokinį pamokai</h3>
+						?>
+						<table style=" text-align:left;" border="0" cellspacing="5" cellpadding="5">
+                        <h3>Priskirti klasei pamoką</h3>
                         <form action="" method="post">
 						<fieldset>
-							<legend>Pasirinkite mokinį ir pamoką</legend>
+							<legend>Pasirinkite klasę, pamoką ir mokytoją</legend>
 							<?php
-							echo'Mokinys ';
-							$query6 = "SELECT * from users WHERE userlevel=1";
-							echo'<select name="mokin">';
+							echo'Klasė ';
+							$query1 = "SELECT * from klase";
+							echo'<select name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
-							$mok = $database->query($query6);
-							while ( $row=mysqli_fetch_assoc($mok)) {
-								echo "<option value='".$row['id_Vartotojas']."'>".$row['username']."</option>";
+							$klase = $database->query($query1);
+							while ( $row=mysqli_fetch_assoc($klase)) {
+								echo "<option value='".$row['id_Klase']."'>".$row['klase']."</option>";
 								}
 							echo"</select>";
 							echo"<br><br>";
 							echo'Pamoka ';
-							$query7 = "SELECT * from pamoka";
+							$query2 = "SELECT * from pamoka";
 							echo'<select name="pam">';
 							echo'<option value="0">Pasirinkite...</option>';
-							$pamok = $database->query($query7);
-							while ( $row=mysqli_fetch_assoc($pamok)) {
+							$pam = $database->query($query2);
+							while ( $row=mysqli_fetch_assoc($pam)) {
 								echo "<option value='".$row['id_Pamoka']."'>".$row['pavadinimas']."</option>";
+								}
+							echo"</select>";
+							echo"<br><br>";
+							echo'Mokytojas ';
+							$query3 = "SELECT * from vartotojas WHERE lygis=5";
+							echo'<select name="vart">';
+							echo'<option value="0">Pasirinkite...</option>';
+							$vart= $database->query($query3);
+							while ( $row=mysqli_fetch_assoc($vart)) {
+								echo "<option value='".$row['id_Vartotojas']."'>".$row['vardas']." ".$row['pavarde']."</option>";
 								}
 							echo"</select>";
 							?>
 						</fieldset>
 						<p><input type="submit" class="submit" name="priskirti" value="Priskirti"></p>
 						</form>
-                <tr><td><hr></td></tr>
-            </td></tr>
+						</table>
 						
-						
-						<tr><td> 
-                        <h3>Kurti naują pamoką:</h3>
+						<table style=" text-align:left;" border="0" cellspacing="5" cellpadding="5">
+                        <h3>Paskirti pamokai laiką</h3>
                         <form action="" method="post">
 						<fieldset>
-							<legend>Pamokos informacija</legend>
-							<p><label class="field" for="pavadinimas">Pavadinimas </label><input type="text" id="pavadinimas" name="pavadinimas" class="textbox-100" value="<?php echo isset($fields['pavadinimas']) ? $fields['pavadinimas'] : ''; ?>" /></p>
+							<legend>Pasirinkite klasės pamoką, kabinetą, laiką, savaitės dieną</legend>
 							<?php
-							echo'Mokytojas ';
-							$query5 = "SELECT * from users WHERE userlevel=5";
-							echo'<select name="mokyt">';
+							echo'Pamoka ';
+							//$query1 = "SELECT * from klasespamoka, pamoka, klase ";
+							$query1 = "SELECT * FROM `klase`, `klasespamoka`, `pamoka`, `vartotojas` 
+							WHERE `klasespamoka`.fk_Klase = `klase`.id_Klase 
+							&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+							&& `vartotojas`.`id_Vartotojas` = `klasespamoka`.`fk_Mokytojas`";
+							echo'<select name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
-							$mok = $database->query($query5);
-							while ( $row=mysqli_fetch_assoc($mok)) {
-								echo "<option value='".$row['id_Vartotojas']."'>".$row['username']."</option>";
+							$klase = $database->query($query1);
+							while ( $row=mysqli_fetch_assoc($klase)) {
+								echo "<option value='".$row['id_Klasespamoka']."'>".$row['klase']." ".$row['pavadinimas']." ".$row['vardas']." ".$row['pavarde']."</option>";
 								}
 							echo"</select>";
+							echo"<br>";
 							?>
+							<p><label class="field" for="kabinetas">Kabinetas </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value="<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
+							<?php
+							echo'Laikas ';
+							?>
+							<select name="laikas">';
+							<option value="0">Pasirinkite...</option>';
+							<option value="08:00:00">08:00</option>
+							<option value="09:00:00">09:00</option>
+							<option value="10:00:00">10:00</option>
+							<option value="11:00:00">11:00</option>
+							<option value="12:00:00">12:00</option>
+							<option value="13:00:00">13:00</option>
+							<option value="14:00:00">14:00</option>
+							<option value="15:00:00">15:00</option>
+							<option value="16:00:00">16:00</option>
+							</select>
+							<br><br>
+							<?php
+							echo'Savaitės diena ';
+							?>
+							<select name="diena">';
+							<option value="0">Pasirinkite...</option>';
+							<option value="Pirmadienis">Pirmadienis</option>
+							<option value="Antradienis">Antradienis</option>
+							<option value="Trečiadienis">Trečiadienis</option>
+							<option value="Ketvirtadienis">Ketvirtadienis</option>
+							<option value="Penktadienis">Penktadienis</option>
+							</select>
+							<br><br>
 						</fieldset>
-						<p><input type="submit" class="submit" name="submit" value="Sukurti"></p>
+						<p><input type="submit" class="submit" name="paskirti" value="Paskirti"></p>
 						</form>
-
+						</table>
     <?php
     echo "<tr><td>";
     include("../include/footer.php");
