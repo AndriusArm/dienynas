@@ -1,5 +1,6 @@
 <?php
 include("include/session.php");
+include("include/functions.php");
 if ($session->logged_in) {
     ?>
     <html>
@@ -15,7 +16,7 @@ th, td {
 	</style>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
-            <title>Mano mokiniai</title>
+            <title>Mano dienynas</title>
             <link href="include/styles2.css" rel="stylesheet" type="text/css" />
         </head>
         <body>
@@ -24,6 +25,15 @@ th, td {
                     </td></tr><tr><td> 
                         <?php
                         include("include/meniu.php");
+                        $currentMonth = date("m");
+                        $currentYear = date("Y");
+                        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+                        //TODO show by month
+                        //$activeMonth
+                        $startDate = date("Y-m-01");
+                        $endDate = date("Y-m-t");
+                        $grades =[]; 
+                        
                         if (isset ($_POST['pazymys'])){                            
                             $pid = $_POST['id'];
                             $paz = $_POST['paz'];
@@ -48,20 +58,20 @@ th, td {
                         ?>                           
                         <br> 
                         <div style="text-align: center;color:green">                   
-                            <h1>Mano mokiniai</h1>
+                            <h1>Mano dienynas</h1>
                             <form action="" method="post">
                             <fieldset>
                                 <legend>Mokinių sąrašas</legend>
                                 <?php
                                 echo'Pasirinkite pamoką ';
-                                $k = $session->userinfo["id_Vartotojas"];
-                                $query = "SELECT pamoka.pavadinimas, pamoka.id_pamoka,klasespamoka.fk_Klase from pamoka, klasespamoka WHERE klasespamoka.fk_Mokytojas=2 and klasespamoka.fk_Pamoka = pamoka.id_Pamoka";
+                                $userID = $session->userinfo["id_Vartotojas"];
+                                $query = "SELECT pamoka.pavadinimas, pamoka.id_pamoka,klasespamoka.fk_Klase, klase.klase from pamoka, klasespamoka, klase WHERE klasespamoka.fk_Mokytojas= $userID and klasespamoka.fk_Pamoka = pamoka.id_Pamoka and klase.id_Klase = klasespamoka.fk_Klase ";
 
                                 echo'<select name="pam">';
                                 echo'<option value="0">Pasirinkite...</option>';
                                 $mok = $database->query($query);                                       
                                 while ( $row=mysqli_fetch_assoc($mok)) {
-                                        echo "<option value='[".$row['id_pamoka'].",".$row['fk_Klase']."]'>".$row['pavadinimas']."</option>";
+                                        echo "<option value='[".$row['id_pamoka'].",".$row['fk_Klase']."]'>".$row['pavadinimas']." ".$row['klase']."</option>";
                                 }
                                 echo"</select>";
                                 if (isset ($_POST['pam'])){ 
@@ -72,55 +82,58 @@ th, td {
                                     
                                     if($pam != 0){
 
-                                    $query2 = "SELECT vardas, pavarde, klase, `vartotojas`.`id_Vartotojas` FROM `vartotojas`, `mokinys`, `klasespamoka`, klase WHERE `mokinys`.fk_Klase = $klase AND klasespamoka.fk_Klase = $klase AND klasespamoka.fk_Pamoka = $pam AND vartotojas.id_Vartotojas = mokinys.id_Vartotojas and klase.id_Klase = mokinys.fk_Klase";
+                                    $query2 = "SELECT vardas, pavarde, klase, `vartotojas`.`id_Vartotojas` FROM `vartotojas`, `mokinys`, `klasespamoka`, klase WHERE `mokinys`.fk_Klase = $klase AND klasespamoka.fk_Klase = $klase AND klasespamoka.fk_Pamoka = $pam AND vartotojas.id_Vartotojas = mokinys.id_Vartotojas and klase.id_Klase = mokinys.fk_Klase group by id_Vartotojas";
                                     $result = $database->query($query2);
                                     $query3="SELECT pavadinimas FROM `pamoka` WHERE id_Pamoka=$pam";
                                     $p = $database->query($query3);
                                     $row=mysqli_fetch_assoc($p);
 
-                                    echo "<h2>Pamoka: " .$row['pavadinimas']. "</h2>";
-                                    echo '<table>';
-                                    echo'<th>'.'Nr.'."</th>";
-                                    echo'<th>'.'Mokinys'."</th>";
-                                    $i=1;
-                                    echo'<td></td>';
-                                    echo'<td></td>';
-                                    echo'<td></td>';
-                                    while ($row = mysqli_fetch_array($result)){
-                                        echo'<tbody>';
-                                        ?>
+                                    echo "<h2>Pamoka: " .$row['pavadinimas']."</h2>";
+                                    $colspan = $daysInMonth + 1;
+                                    echo "<table class=\"table table-bordered\"> "
+                                       ." <thead>"
+                                        ."<tr>"
+                                            ."<th rowspan=\"2\">Nr.</th>"
+                                            ."<th rowspan=\"2\">Mokinys</th>"
+                                            ."<th colspan=\"$colspan\">Diena</th>"
+                                        ."</tr>"
+                                        ."</thead>"
+                                        ."<tbody>"
+                                            ."<tr>"
+                                            ."<td></td>"
+                                             ."<td></td>";
+
+                                       for($i = 1; $i <= $daysInMonth; $i++){
+                                           echo "<td>$i</td>";
+                                       }
+                                       echo "</tr>";
+                                       $i=1;
+                                       ?>
                                         <form action="" method="post">
                                         <?php
+                                    while ($row = mysqli_fetch_array($result)){
+                                        echo "<tr>";
                                         $pamok=$pam;
                                         echo'<input type=\'hidden\' name=\'pamok\' value=\''.$pamok.'\' />';
                                         echo'<td>'. $i."</td>";
-                                        echo'<th>'. $row['vardas'].' '.$row['pavarde']."</th>";
+                                        echo'<td>'. $row['vardas'].' '.$row['pavarde']."</td>";
                                         echo'<input type=\'hidden\' name=\'id\' value=\''.$row['id_Vartotojas'].'\' />';
-                                        echo'<td>'. '
-                                        <select name="paz">
-                                        <option value="0">Pasirinkite pažymį</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                        </select>
-                                        ' . "</td>";
-                                        ?>
-                                        <td><p><label class="field" for="komentaras"></label><input type="text" id="komentaras" name="komentaras" class="textbox-100" value="<?php echo isset($fields['komentaras']) ? $fields['komentaras'] : ''; ?>" /></p></td>
-                                        <?php							
-                                        echo"<td><input name='pazymys' type='submit' value='Pridėti įrašą'</td>";
-                                        ?>
-                                        </form>
-                                        <?php
-                                        $i=$i+1;
-                                        echo'</tbody>';
+                                        fillGradesNoHTML($row['id_Vartotojas'], $pamok, $grades, $startDate, $endDate);
+                                        for($j = 1; $j <= $daysInMonth; $j++){
+                                            if (array_key_exists($j, $grades)){
+                                                echo "<td><input class=\"pazymys\" name=".$row['id_Vartotojas'].",$j value=\"$grades[$j]\"></td>";
+                                            }else{
+                                                echo "<td><input class=\"pazymys\" name=".$row['id_Vartotojas'].",$j></td>";
+                                            }
+                                        }
+                                        for ($k = 1; $k <= $daysInMonth; $k++)
+                                            unset($grades[$k]);
+                                        echo "</tr>";                                                                           
+                                        $i=$i+1;                                  
                                     }
+                                    echo'</tbody>';
+                                    echo "<input name=\"pazymys\" type=\"submit\" value=\"Išsaugoti\"</td>";
+                                    echo "</form>";
                                     echo '</table>'; 
                                     } 	else {
                                             ?>

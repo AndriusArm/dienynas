@@ -56,29 +56,47 @@ if ($session->logged_in) {
                    }
                    ?></tr><?php
                         $userID = $session->userinfo["id_Vartotojas"];
-                        $markQuery = "SELECT pazymys.verte, lankomumas.data, pamoka.pavadinimas, lankomumas.arBuvo, pamoka.id_Pamoka "
-                                   . "FROM pazymys, lankomumas, pamoka "
-                                   . "WHERE `pazymys`.`fk_KlasesPamoka` = `lankomumas`.`fk_KlasesPamoka` "
-                                   . "and lankomumas.fk_Mokinys = $userID and pamoka.id_Pamoka = pazymys.id_Pazymys "
-                                   . "order by pamoka.pavadinimas, lankomumas.data ASC";
-                        $no=1;
+                        $sql = "SELECT * "
+                                . "FROM mokinys, pamoka, klasespamoka,klase "
+                                . "WHERE mokinys.fk_Klase = klase.id_Klase "
+                                . "AND klasespamoka.fk_Pamoka = pamoka.id_Pamoka "
+                                . "AND mokinys.id_Vartotojas = $userID "
+                                . "AND klase.id_Klase = klasespamoka.fk_Klase "
+                                . "GROUP BY id_Pamoka";
                         
-                        $result = $database->query($markQuery);
+                        $resultList = $database->query($sql);
 			$lastSubject = "";
                         $lastSubjectID = "";
-                        while ($row = mysqli_fetch_array($result)){
-                            if ($row['pavadinimas'] != $lastSubject && $lastSubject != ""){
-                                fillGrades($row, $userID, $lastSubject, $lastSubjectID, $no, $daysInMonth, $grades);
-                                echo "</tr>";
-                                for ($i = 1; $i <= $daysInMonth; $i++)
+                        $no=1;
+                        while($subj = mysqli_fetch_array($resultList)){                      
+                            $subjectID = $subj['id_Pamoka'];
+                            $markQuery = "SELECT pazymys.verte, lankomumas.data "
+                                    . "FROM klasespamoka, pamoka, mokinys, pazymys, lankomumas "
+                                    . "where mokinys.id_Vartotojas = $userID "
+                                    . "and mokinys.id_Vartotojas = lankomumas.fk_Mokinys "
+                                    . "and pazymys.fk_KlasesPamoka = lankomumas.fk_KlasesPamoka "
+                                    . "and pamoka.id_Pamoka = klasespamoka.fk_Pamoka "
+                                    . "and klasespamoka.id_Klasespamoka = lankomumas.fk_KlasesPamoka "
+                                    . "AND lankomumas.data < '$endDate' "
+                                    . "AND '$startDate' < lankomumas.data "
+                                    . "AND pamoka.id_Pamoka = $subjectID "
+                                    . "ORDER BY pamoka.pavadinimas, lankomumas.data ASC";
+                            $result = $database->query($markQuery);
+                            $lastSubject = $subj['pavadinimas'];
+                            $lastSubjectID = $subj['id_Pamoka'];
+                                
+                            while ($row = mysqli_fetch_array($result)){                           
+                                 $day = date('j', strtotime($row['data']));
+                                 $grades[$day] = $row['verte'];   
+                             }                                                    
+                                
+                            fillGrades($row, $userID, $lastSubject, $lastSubjectID, $no, $daysInMonth, $grades);
+                            $no++;
+                            for ($i = 1; $i <= $daysInMonth; $i++)
                                   unset($grades[$i]);
-                            }
-                            $day = date('j', strtotime($row['data']));
-                            $grades[$day] = $row['verte'];
-                            $lastSubject = $row['pavadinimas'];
-                            $lastSubjectID = $row['id_Pamoka'];
+                            echo "</tr>";
                         }
-                        fillGrades($row, $userID, $lastSubject, $lastSubjectID, $no, $daysInMonth, $grades);
+                        
                        ?>
                     </tbody>
                 </table>

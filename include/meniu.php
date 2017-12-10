@@ -22,7 +22,7 @@ if (isset($session) && $session->logged_in) {
 		}
 		//Mokytojo sąsaja ir tvarkaraštis rodoma tik mokytojui
 		if ($session->isMokytojas()) {
-			echo "[<a href=\"" . $path . "mano_mokiniai.php\">Mano mokiniai</a>] &nbsp;&nbsp;";
+			echo "[<a href=\"" . $path . "mano_mokiniai.php\">Mano dienynas</a>] &nbsp;&nbsp;";
 			echo "[<a href=\"" . $path . "mokytojo_tvarkarastis.php\">Mano tvarkaraštis</a>] &nbsp;&nbsp;";
 		}
         //Administratoriaus sąsaja rodoma tik administratoriui
