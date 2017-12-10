@@ -32,8 +32,6 @@ if (!$session->isAdministratorius()) {
                         <div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
-                      
-
 						<legend></legend>
 						<form action="" method="post">
 							<?php
@@ -44,18 +42,19 @@ if (!$session->isAdministratorius()) {
 							    $result = $database->query($sql);
 							}
 							?>
-
+					<div class="center">
+					<h2>Klasių valdymas</h2>
+					    <div class="row">
+					        <div class="col-md-6 ">           
 							<form action="" method="post"> 
-							 <h2>Klasių valdymas</h2>
-  							<p>Sukurti naują klasę:</p>   
-							<input type="text" name=klasesPavadinimas placeholder="įveskite klasės pavadinimą.."><br/>
-							<br />
+  							<p>Sukurti naują klasę</p>   
+  							<input type="text" name= "klasesPavadinimas" class="form-control" placeholder="Įveskite klasės pavadinimą..."><br/>
 							<button type="submit" class="btn btn-info" name="save2">Pridėti naują</button>
 						</form>
+			        </div>
 
-
-					<h2>Pasirinkite klasę</h2>
-					<label for="recipient-name" class="form-control-label">Klasė</label>
+			        <div class="col-md-6">
+            			<p>Atlikite mokinių paiešką pagal klasę:</p>
 					   <?php
 						if(isset($_POST['klase'])){
     					$selectOption = $_POST['klase'];
@@ -64,21 +63,26 @@ if (!$session->isAdministratorius()) {
 						<form action="" method="post">
 						<?php
 							$query6 = "SELECT * from klase";
-							echo'<select class= "custom-select" name="klase">';
+							echo'<select class="form-control" class= "custom-select" name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
+
 							$klas = $database->query($query6);
 							while ( $row=mysqli_fetch_assoc($klas)) {?>
+								 
 								 <option value=<?php echo $row['klase'];
 								 if(isset($_POST['klase']) && $_POST['klase'] == $row['klase'])
 								 echo 'selected="selected"'; ?>
-								><?php echo $row['klase'] ?></option>;
+								><?php echo $row['klase'] ?></option><br/>
 							<?php }
+							
+							echo '<br/><input type="submit" class="btn btn-info" value="Ieškoti.."/>';
 							echo '</div>';
-							echo'<input type="submit" class="btn btn-primary" value="Ieškoti.."/>';
 						?>	
 							</select>
+         </div>
+    </div>
+</div>
 						
-									
 						</fieldset>
 
 						<legend></legend>
@@ -154,7 +158,7 @@ if (!$session->isAdministratorius()) {
 										          </div>
 										        <div class="form-group">
 										            <label for="recipient-name" class="form-control-label">Slaptažodis: </label>
-										            <input type="password" name="slaptazodis" class="form-control" id="inputPassword2" placeholder="Password">
+										            <input class="form-control" type="password" value="hunter2" id="example-password-input" name = "slaptazodis">
 										          </div>
 												    <div class="form-group">
 												      <label for="inputState">Mokinio tėvas</label>
