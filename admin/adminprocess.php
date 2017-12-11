@@ -24,7 +24,7 @@ class AdminProcess {
             $this->procBanUser();
         }
         /* Admin submitted delete banned user form */ else if (isset($_GET['db'])) {
-            $this->procDeleteBannedUser();
+            $this->procUnBanUser();
         }
         /* Should not get here, redirect to home page */ else {
             header("Location: ../index.php");
@@ -91,18 +91,18 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Ban user from member system */ else {
-            $q = "UPDATE " . TBL_USERS . " SET busena= 'blokuotas' WHERE username = '$subuser'";
+            $q = "UPDATE " . TBL_USERS . " SET busena = 'blokuotas' WHERE username = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }
     }
 
     /**
-     * procDeleteBannedUser - If the submitted username is correct,
+     * procUnbanUser - If the submitted username is correct,
      * the user is deleted from the banned users table, which
      * enables someone to register with that username again.
      */
-    function procDeleteBannedUser() {
+    function procUnbanUser() {
         global $session, $database, $form;
         /* Username error checking */
         $subuser = $this->checkUsername("delbanuser", true);
@@ -114,7 +114,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Delete user from database */ else {
-            $q = "UPDATE " . TBL_USERS . " SET busena= 'aktyvus' WHERE username = '$subuser'";
+            $q = "UPDATE " . TBL_USERS . " SET busena = 'aktyvus' WHERE username = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }
