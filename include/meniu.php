@@ -14,7 +14,8 @@ if (isset($session) && $session->logged_in) {
         echo "</td></tr><tr><td>";
         echo "[<a href=\"" . $path . "index.php\">Pagrindinis</a>] &nbsp;&nbsp;"
 		. "[<a href=\"" . $path . "naujienos.php\">Naujienos</a>] &nbsp;&nbsp;"
-        . "[<a href=\"" . $path . "paskyra.php\">Paskyra</a>] &nbsp;&nbsp;";
+        . "[<a href=\"" . $path . "paskyra.php\">Paskyra</a>] &nbsp;&nbsp;"
+        . "[<a href=\"" . $path . "zinutes.php\">Žinutės</a>] &nbsp;&nbsp;";
 		//Mokinio dienynas ir tvarkaraštis rodomas tik mokiniui
 		if ($session->isMokinys()) {
 			echo "[<a href=\"" . $path . "mano_dienynas.php\">Mano dienynas</a>] &nbsp;&nbsp;";
