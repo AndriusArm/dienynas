@@ -70,17 +70,16 @@ if ($session->logged_in) {
                         $no=1;
                         while($subj = mysqli_fetch_array($resultList)){                      
                             $subjectID = $subj['id_Pamoka'];
-                            $markQuery = "SELECT pazymys.verte, lankomumas.data "
-                                    . "FROM klasespamoka, pamoka, mokinys, pazymys, lankomumas "
+                            $markQuery = "SELECT pazymys.verte, pazymys.data "
+                                    . "FROM klasespamoka, pamoka, mokinys, pazymys "
                                     . "where mokinys.id_Vartotojas = $userID "
-                                    . "and mokinys.id_Vartotojas = lankomumas.fk_Mokinys "
-                                    . "and pazymys.fk_KlasesPamoka = lankomumas.fk_KlasesPamoka "
                                     . "and pamoka.id_Pamoka = klasespamoka.fk_Pamoka "
-                                    . "and klasespamoka.id_Klasespamoka = lankomumas.fk_KlasesPamoka "
-                                    . "AND lankomumas.data < '$endDate' "
-                                    . "AND '$startDate' < lankomumas.data "
+                                    . "and pazymys.fk_klasespamoka = klasespamoka.id_klasespamoka "
+                                    . "AND pazymys.data < '$endDate' "
+                                    . "AND mokinys.id_Vartotojas = pazymys.fk_Mokinys "
+                                    . "AND '$startDate' < pazymys.data "
                                     . "AND pamoka.id_Pamoka = $subjectID "
-                                    . "ORDER BY pamoka.pavadinimas, lankomumas.data ASC";
+                                    . "ORDER BY pamoka.pavadinimas, pazymys.data ASC";
                             $result = $database->query($markQuery);
                             $lastSubject = $subj['pavadinimas'];
                             $lastSubjectID = $subj['id_Pamoka'];
