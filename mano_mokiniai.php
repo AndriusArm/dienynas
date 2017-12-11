@@ -12,7 +12,36 @@ if ($session->logged_in) {
 th, td {
     padding: 8px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;}
+
+table.center{
+    position: absolute;
+    background-color: #999966;   
+    z-index: -5;
+    width:90%;
+    margin-left:5%;
+    margin-right:5%;
+}
+
+.table tr:hover {
+  background-color: #ffa;
+}
+
+.table td, .table th {
+  position: relative;
+}
+
+.table td:hover::after,
+.table th:hover::after {
+  content: "";
+  position: absolute;
+  background-color: #ffa;
+  left: 0;
+  top: -5000px;
+  height: 10000px;
+  width: 100%;
+  z-index: -1;
+}
 	</style>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
