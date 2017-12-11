@@ -43,14 +43,6 @@ if ($session->logged_in) {
                                             <p>Naujas slaptažodis:<br>
                                                 <input type="password" name="newpass" maxlength="30" size="25" value="<?php echo $form->value("newpass"); ?>">
                                                 <br><?php echo $form->error("newpass"); ?></p>
-                                            <p>E-paštas:<br>
-                                                <input type="text" name="email" maxlength="30" size="25" value="<?php
-                    if ($form->value("email") == "") {
-                        echo $session->userinfo['email'];
-                    } else {
-                        echo $form->value("email");
-                    }
-                            ?>"> <br><?php echo $form->error("email"); ?></p>
                                             <input type="hidden" name="subedit" value="1">
                                             <input type="submit" value="Atnaujinti">
                                         </form>

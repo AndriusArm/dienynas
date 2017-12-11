@@ -22,9 +22,6 @@ define("DB_NAME", "dienynas2");
  * in the script.
  */
 define("TBL_USERS", "vartotojas");
-//define("TBL_ACTIVE_USERS", "active_users");
-//define("TBL_ACTIVE_GUESTS", "active_guests");
-//define("TBL_BANNED_USERS", "banned_users");
 define("TBL_NAUJIENA", "naujiena");
 
 /**

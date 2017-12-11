@@ -160,7 +160,7 @@ class Process {
     function procEditAccount() {
         global $session, $form;
         /* Account edit attempt */
-        $retval = $session->editAccount($_POST['curpass'], $_POST['newpass'], $_POST['email']);
+        $retval = $session->editAccount($_POST['curpass'], $_POST['newpass']);
 
         /* Account edit successful */
         if ($retval) {

@@ -25,15 +25,6 @@ class MySQLDB {
          * until then, default value set.
          */
         $this->num_members = -1;
-/* Calculate number of users at site*/
-/* Calculate number of guests at site*/
-       /* if (TRACK_VISITORS) {
-            
-            $this->calcNumActiveUsers();
-
-             
-            $this->calcNumActiveGuests();
-        }*/
     }
 
     /**
@@ -188,108 +179,6 @@ class MySQLDB {
         }
         return $this->num_members;
     }
-
-    /**
-     * calcNumActiveUsers - Finds out how many active users
-     * are viewing site and sets class variable accordingly.
-     */
-	
-	/* Calculate number of users at site*/
-	/*
-    function calcNumActiveUsers() {
-        
-        $q = "SELECT * FROM " . TBL_ACTIVE_USERS;
-        $result = mysqli_query($this->connection, $q);
-        $this->num_active_users = mysqli_num_rows($result);
-    }*/
-	
-
-    /**
-     * calcNumActiveGuests - Finds out how many active guests
-     * are viewing site and sets class variable accordingly.
-     */
-	 /* Calculate number of guests at site */
-	 /*
-    function calcNumActiveGuests() {
-        
-        $q = "SELECT * FROM " . TBL_ACTIVE_GUESTS;
-        $result = mysqli_query($this->connection, $q);
-        $this->num_active_guests = mysqli_num_rows($result);
-    }*/
-
-    /**
-     * addActiveUser - Updates username's last active timestamp
-     * in the database, and also adds him to the table of
-     * active users, or updates timestamp if already there.
-     */
-	 /*
-    function addActiveUser($username, $time) {
-        $q = "UPDATE " . TBL_USERS . " SET timestamp = '$time' WHERE username = '$username'";
-        mysqli_query($this->connection, $q);
-
-        if (!TRACK_VISITORS)
-            return;
-        $q = "REPLACE INTO " . TBL_ACTIVE_USERS . " VALUES ('$username', '$time')";
-        mysqli_query($this->connection, $q);
-        //$this->calcNumActiveUsers();
-    }
-	*/
-
-    /* addActiveGuest - Adds guest to active guests table */
-/*
-    function addActiveGuest($ip, $time) {
-        if (!TRACK_VISITORS)
-            return;
-        $q = "REPLACE INTO " . TBL_ACTIVE_GUESTS . " VALUES ('$ip', '$time')";
-        mysqli_query($this->connection, $q);
-        $this->calcNumActiveGuests();
-    }*/
-
-    /* These functions are self explanatory, no need for comments */
-
-    /* removeActiveUser */
-/*
-    function removeActiveUser($username) {
-        if (!TRACK_VISITORS)
-            return;
-        $q = "DELETE FROM " . TBL_ACTIVE_USERS . " WHERE username = '$username'";
-        mysqli_query($this->connection, $q);
-        $this->calcNumActiveUsers();
-    }
-*/
-    /* removeActiveGuest */
-/*
-    function removeActiveGuest($ip) {
-        if (!TRACK_VISITORS)
-            return;
-        $q = "DELETE FROM " . TBL_ACTIVE_GUESTS . " WHERE ip = '$ip'";
-        mysqli_query($this->connection, $q);
-        //$this->calcNumActiveGuests();
-        //$this->calcNumActiveGuests();
-    }
-*/
-    /* removeInactiveUsers */
-/*
-    function removeInactiveUsers() {
-        if (!TRACK_VISITORS)
-            return;
-        $timeout = time() - USER_TIMEOUT * 60;
-        $q = "DELETE FROM " . TBL_ACTIVE_USERS . " WHERE timestamp < $timeout";
-        mysqli_query($this->connection, $q);
-        //$this->calcNumActiveUsers();
-    }
-*/
-    /* removeInactiveGuests */
-/*
-    function removeInactiveGuests() {
-        if (!TRACK_VISITORS)
-            return;
-        $timeout = time() - GUEST_TIMEOUT * 60;
-        $q = "DELETE FROM " . TBL_ACTIVE_GUESTS . " WHERE timestamp < $timeout";
-        mysqli_query($this->connection, $q);
-        //$this->calcNumActiveGuests();
-    }
-	*/
 
     /**
      * query - Performs the given query on the database and

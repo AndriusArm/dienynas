@@ -1,2 +1,2 @@
-Vartotojai: Moderatorius, Mokytojas, Mokinys
-Visø slaptaþodis: demo
+Vartotojai: admin, Mokytojas, Mokinys
+Visu slaptazodis: demo

@@ -42,23 +42,6 @@ if (!$session->isAdministratorius()) {
 								}
 						}
 						
-							if (isset ($_POST['priskirti'])){
-							$pam = $_POST['pam'];
-							$mk = $_POST['mokin'];
-							if($pam != 0 & $mk!= 0){
-							$query8="INSERT INTO `mokinys_pamoka` (fk_Mokinys, fk_Pamoka) VALUES 
-							('$mk', '$pam')";
-							$database->query($query8);
-						} 	else {
-							?>
-								<div class="alert">
-								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-								Nepasirinkta pamoka arba mokinys
-								</div>
-								<?php
-								}
-						}
-						
 						if (isset ($_POST['trinti'])){
 							$pam = $_POST['pam'];
 							if($pam != 0){
@@ -74,37 +57,6 @@ if (!$session->isAdministratorius()) {
 								}
 						}
                         ?>
-						
-                        <table style=" text-align:left;" border="0" cellspacing="5" cellpadding="5">
-                        <h3>Priskirti mokinį pamokai</h3>
-                        <form action="" method="post">
-						<fieldset>
-							<legend>Pasirinkite mokinį ir pamoką</legend>
-							<?php
-							echo'Mokinys ';
-							$query6 = "SELECT * from users WHERE userlevel=1";
-							echo'<select name="mokin">';
-							echo'<option value="0">Pasirinkite...</option>';
-							$mok = $database->query($query6);
-							while ( $row=mysqli_fetch_assoc($mok)) {
-								echo "<option value='".$row['id_Vartotojas']."'>".$row['username']."</option>";
-								}
-							echo"</select>";
-							echo"<br><br>";
-							echo'Pamoka ';
-							$query7 = "SELECT * from pamoka";
-							echo'<select name="pam">';
-							echo'<option value="0">Pasirinkite...</option>';
-							$pamok = $database->query($query7);
-							while ( $row=mysqli_fetch_assoc($pamok)) {
-								echo "<option value='".$row['id_Pamoka']."'>".$row['pavadinimas']."</option>";
-								}
-							echo"</select>";
-							?>
-						</fieldset>
-						<p><input type="submit" class="submit" name="priskirti" value="Priskirti"></p>
-						</form>
-						</table>
 						
 						<table style=" text-align:left;" border="0" cellspacing="5" cellpadding="5">
                         <h3>Kurti naują pamoką</h3>

@@ -47,16 +47,8 @@ class Session {
          */
         if (!$this->logged_in) {
             $this->username = $_SESSION['username'] = GUEST_NAME;
-            $this->userlevel = GUEST_LEVEL;
-            //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
+            $this->userlevel = GUEST_LEVEL;;
         }
-        ///* Update users last active timestamp */ else {
-        //    $database->addActiveUser($this->username, $this->time);
-        //}
-
-        /* Remove inactive visitors from database */
-        //$database->removeInactiveUsers();
-        //$database->removeInactiveGuests();
 
         /* Set referrer page */
         if (isset($_SESSION['url'])) {
@@ -166,8 +158,6 @@ class Session {
 
         /* Insert userid into database and update active users table */
         $database->updateUserField($this->username, "userid", $this->userid);
-        //$database->addActiveUser($this->username, $this->time);
-        //$database->removeActiveGuest($_SERVER['REMOTE_ADDR']);
 
         /**
          * This is the cool part: the user has requested that we remember that
@@ -209,13 +199,6 @@ class Session {
 
         /* Reflect fact that user has logged out */
         $this->logged_in = false;
-
-        /**
-         * Remove from active users table and add to
-         * active guests tables.
-         */
-        //$database->removeActiveUser($this->username);
-        //$database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
 
         /* Set user level to guest */
         $this->username = GUEST_NAME;
@@ -319,7 +302,7 @@ class Session {
      * format, the change is made. All other fields are changed
      * automatically.
      */
-    function editAccount($subcurpass, $subnewpass, $subemail) {
+    function editAccount($subcurpass, $subnewpass) {
         global $database, $form;  //The database and form object
         /* New password entered */
         if ($subnewpass) {
@@ -331,7 +314,7 @@ class Session {
                 /* Check if password too short or is not alphanumeric */
                 $subcurpass = stripslashes($subcurpass);
                 if (strlen($subcurpass) < 4 ||
-                        !eregi("^([0-9a-z])+$", ($subcurpass = trim($subcurpass)))) {
+                        !preg_match("/^([0-9a-z])+$/", ($subcurpass = trim($subcurpass)))) {
                     $form->setError($field, "* Slaptažodis gali būti sudarytas
                     <br>&nbsp;&nbsp;tik iš raidžių ir skaičių");
                 }
@@ -348,7 +331,7 @@ class Session {
             if (strlen($subnewpass) < 4) {
                 $form->setError($field, "* Slaptažodis per trumpas");
             }
-            /* Check if password is not alphanumeric */ else if (!eregi("^([0-9a-z])+$", ($subnewpass = trim($subnewpass)))) {
+            /* Check if password is not alphanumeric */ else if (!preg_match("/^([0-9a-z])+$/", ($subnewpass = trim($subnewpass)))) {
                 $form->setError($field, "* Slaptažodis gali būti sudarytas
                     <br>&nbsp;&nbsp;tik iš raidžių ir skaičių");
             }
@@ -359,19 +342,6 @@ class Session {
             $form->setError($field, "* Neįvestas naujas slaptažodis");
         }
 
-        /* Email error checking */
-        $field = "email";  //Use field name for email
-        if ($subemail && strlen($subemail = trim($subemail)) > 0) {
-            /* Check if valid email address */
-            $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
-                    . "@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
-                    . "\.([a-z]{2,}){1}$";
-            if (preg_match($regex, $subemail)) {
-                $form->setError($field, "* Neteisingas e-pašto adresas");
-            }
-            $subemail = stripslashes($subemail);
-        }
-
         /* Errors exist, have user correct them */
         if ($form->num_errors > 0) {
             return false;  //Errors with form
@@ -380,11 +350,6 @@ class Session {
         /* Update password since there were no errors */
         if ($subcurpass && $subnewpass) {
             $database->updateUserField($this->username, "password", md5($subnewpass));
-        }
-
-        /* Change Email */
-        if ($subemail) {
-            $database->updateUserField($this->username, "email", $subemail);
         }
 
         /* Success! */

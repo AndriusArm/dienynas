@@ -24,7 +24,6 @@ if (isset($form) && isset($session) && !$session->logged_in) {
         <input type="hidden" name="sublogin" value="1"/>
         <p>
             <a href="forgotpass.php">Pamiršote slaptažodį?</a>&nbsp;&nbsp;            
-            <a href="register.php">Registracija</a>
         </p>     
     </form>
     <?php
