@@ -6,42 +6,38 @@ if (!$session->isAdministratorius()) {
     header("Location: ../index.php");
 } else { //Jei administratorius
     ?>
-    <html>
-        <head>  
-            <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
-            <meta charset="utf-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Administratoriaus sąsaja</title>
-            <link href="../include/styles2.css" rel="stylesheet" type="text/css" />
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        </head>  
-        <body>
-            <table class="center"><tr><td>
-                        <img src="../pictures/top.jpg"/>
-                        </td></tr><tr><td> 
-                        <?php
-                        $_SESSION['path'] = '../';
-                        include("../include/meniu.php");
-                        ?>
-                        <br> 
-
-                        <tr><td> 
-                        <fieldset>
-                        <div class="row">
-        				<div class="col-md-12">
-           				<div class="panel-body">
-						<legend></legend>
-						<form action="" method="post">
-							<?php
-							  if(isset($_POST['save2']))
-							{
-							    $sql = "INSERT INTO klase (klase)
-							    VALUES ('".$_POST["klasesPavadinimas"]."')";
-							    $result = $database->query($sql);
-							}
-							?>
+<html>
+<head>  
+<meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administratoriaus sąsaja</title>
+<link href="../include/styles2.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>  
+<body>
+	<table class="center">
+	<tr><td>
+	<img src="../pictures/top.jpg"/>
+    </td></tr> 
+        <tr><td> 
+        <?php $_SESSION['path'] = '../'; include("../include/meniu.php");?><br> 
+        <tr><td> 
+        <fieldset>
+        <div class="row">
+        <div class="col-md-12">
+        <div class="panel-body">
+		<legend></legend>
+				<form action="" method="post">
+					<?php
+			      	  if(isset($_POST['save2']))
+					  {
+					    $sql = "INSERT INTO klase (klase) VALUES ('".$_POST["klasesPavadinimas"]."')";
+						$result = $database->query($sql);
+					  }
+					?>
 					<div class="center">
 					<h2>Klasių valdymas</h2>
 					    <div class="row">
@@ -78,7 +74,7 @@ if (!$session->isAdministratorius()) {
 							echo '<br/><input type="submit" class="btn btn-info" value="Ieškoti.."/>';
 							echo '</div>';
 						?>	
-							</select>
+						</select>
          </div>
     </div>
 </div>
@@ -195,6 +191,7 @@ if (!$session->isAdministratorius()) {
 								        <th>Vardas</th>
 								        <th>Pavardė</th>
 								        <th>Klasė</th>
+								        <th>Veiksmas</th>
 								      </tr>
 								    </thead>
 								    <tbody>
@@ -206,7 +203,27 @@ if (!$session->isAdministratorius()) {
 								        <td><?php echo "<option value='".$row['vardas']."'>".$row['vardas']."</option>"; ?></td>
 								        <td><?php echo "<option value='".$row['pavarde']."'>".$row['pavarde']."</option>"; ?></td>
 								        <td><?php echo "<option value='".$row['klase']."'>".$row['klase']."</option>" ?></td>
+								        <td>								        
+									<a class="btn btn-outline btn-info openModal" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['id_Vartotojas']?>">
+                   					<i class="fa fa-search-plus"></i>Peržiūrėti</a>
+											<div style="margin-top:5%;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								    <div class="modal-dialog">
+								      <div class="modal-content">
+								      	
 
+								      </div>
+								    </div>
+								</div>
+									<script>
+								  $('.openModal').click(function(){
+								      var id = $(this).attr('data-id');
+								      $.ajax({type:'GET',url:"backend.php?id="+id,cache:false,success:function(result){
+								          $(".modal-content").html(result);
+								      }});
+								  });
+								</script>
+
+								        </td>
 								        </tr>
 									<?php } ?>
 								    </tbody>
@@ -264,9 +281,9 @@ if (!$session->isAdministratorius()) {
 		   echo "<script>alert('Importavimas baigtas');</script>";
 		  }
 		 }
-		}
-		?>
-                        <tr><td> 
+	}
+?>
+                       <tr><td> 
                         <div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
