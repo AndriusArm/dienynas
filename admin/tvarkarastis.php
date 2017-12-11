@@ -68,6 +68,7 @@ if (!$session->isAdministratorius()) {
                         <form action="" method="post">
 						<fieldset>
 							<legend>Pasirinkite klasę, pamoką ir mokytoją</legend>
+							<br>
 							<?php
 							echo'Klasė ';
 							$query1 = "SELECT * from klase";
@@ -98,6 +99,7 @@ if (!$session->isAdministratorius()) {
 								echo "<option value='".$row['id_Vartotojas']."'>".$row['vardas']." ".$row['pavarde']."</option>";
 								}
 							echo"</select>";
+							echo"<br><br>";
 							?>
 						</fieldset>
 						<p><input type="submit" class="submit" name="priskirti" value="Priskirti"></p>
@@ -109,6 +111,7 @@ if (!$session->isAdministratorius()) {
                         <form action="" method="post">
 						<fieldset>
 							<legend>Pasirinkite klasės pamoką, kabinetą, laiką, savaitės dieną</legend>
+							<br>
 							<?php
 							echo'Pamoka ';
 							//$query1 = "SELECT * from klasespamoka, pamoka, klase ";

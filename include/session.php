@@ -206,96 +206,6 @@ class Session {
     }
 
     /**
-     * register - Gets called when the user has just submitted the
-     * registration form. Determines if there were any errors with
-     * the entry fields, if so, it records the errors and returns
-     * 1. If no errors were found, it registers the new user and
-     * returns 0. Returns 2 if registration failed.
-     */
-    function register($subuser, $subpass, $subemail) {
-        global $database, $form, $mailer;  //The database, form and mailer object
-
-        /* Username error checking */
-        $field = "user";  //Use field name for username
-        if (!$subuser || strlen($subuser = trim($subuser)) == 0) {
-            $form->setError($field, "* Vartotojas neįvestas");
-        } else {
-            /* Spruce up username, check length */
-            $subuser = stripslashes($subuser);
-            if (strlen($subuser) < 5) {
-                $form->setError($field, "* Vartotojo vardas turi mažiau kaip 5 simbolius");
-            } else if (strlen($subuser) > 30) {
-                $form->setError($field, "* Vartotojo vardas virš 30 simbolių");
-            }
-            /* Check if username is not alphanumeric */ else if (!preg_match("/^([0-9a-z])+$/i", $subuser)) {
-                $form->setError($field, "* Vartotojo vardas gali būti sudarytas
-                    <br>&nbsp;&nbsp;tik iš raidžių ir skaičių");
-            }
-            /* Check if username is reserved */ else if (strcasecmp($subuser, GUEST_NAME) == 0) {
-                $form->setError($field, "* Rezervuotas vartotojo vardas");
-            }
-            /* Check if username is already in use */ else if ($database->usernameTaken($subuser)) {
-                $form->setError($field, "* Toks vartotojo vardas jau yra");
-            }
-            /* Check if username is banned */ else if ($database->usernameBanned($subuser)) {
-                $form->setError($field, "* Vartotojas užblokuotas");
-            }
-        }
-
-        /* Password error checking */
-        $field = "pass";  //Use field name for password
-        if (!$subpass) {
-            $form->setError($field, "* Neįvestas slaptažodis");
-        } else {
-            /* Spruce up password and check length */
-            $subpass = stripslashes($subpass);
-            if (strlen($subpass) < 4) {
-                $form->setError($field, "* Ne mažiau kaip 4 simboliai");
-            }
-            /* Check if password is not alphanumeric */ else if (!preg_match("/^([0-9a-z])+$/i", ($subpass = trim($subpass)))) {
-                $form->setError($field, "* Slaptažodis gali būti sudarytas
-                    <br>&nbsp;&nbsp;tik iš raidžių ir skaičių");
-            }
-            /**
-             * Note: I trimmed the password only after I checked the length
-             * because if you fill the password field up with spaces
-             * it looks like a lot more characters than 4, so it looks
-             * kind of stupid to report "password too short".
-             */
-        }
-
-        /* Email error checking */
-        $field = "email";  //Use field name for email
-        if (!$subemail || strlen($subemail = trim($subemail)) == 0) {
-            $form->setError($field, "* Neįvestas e-pašto adresas");
-        } else {
-            /* Check if valid email address */
-            $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
-                    . "@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
-                    . "\.([a-z]{2,}){1}$";
-            if (preg_match($regex, $subemail)) {
-                $form->setError($field, "* Klaidingas e-pašto adresas");
-            }
-            $subemail = stripslashes($subemail);
-        }
-
-        /* Errors exist, have user correct them */
-        if ($form->num_errors > 0) {
-            return 1;  //Errors with form
-        }
-        /* No errors, add the new account to the */ else {
-            if ($database->addNewUser($subuser, md5($subpass), $subemail)) {
-                if (EMAIL_WELCOME) {
-                    $mailer->sendWelcome($subuser, $subemail, $subpass);
-                }
-                return 0;  //New user added succesfully
-            } else {
-                return 2;  //Registration attempt failed
-            }
-        }
-    }
-
-    /**
      * editAccount - Attempts to edit the user's account information
      * including the password, which it first makes sure is correct
      * if entered, if so and the new password is in the right
@@ -349,7 +259,7 @@ class Session {
 
         /* Update password since there were no errors */
         if ($subcurpass && $subnewpass) {
-            $database->updateUserField($this->username, "password", md5($subnewpass));
+            $database->updateUserField($this->username, "slaptazodis", md5($subnewpass));
         }
 
         /* Success! */

@@ -48,7 +48,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Update user level */ else {
-            $database->updateUserField($subuser, "userlevel", (int) $_POST['updlevel']);
+            $database->updateUserField($subuser, "lygis", (int) $_POST['updlevel']);
             header("Location: " . $session->referrer);
         }
     }
@@ -68,7 +68,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Delete user from database */ else {
-            $q = "DELETE FROM " . TBL_USERS . " WHERE username = '$subuser'";
+            $q = "DELETE FROM " . TBL_USERS . " WHERE prisijungimoVardas = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }
@@ -91,7 +91,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Ban user from member system */ else {
-            $q = "UPDATE " . TBL_USERS . " SET busena = 'blokuotas' WHERE username = '$subuser'";
+            $q = "UPDATE " . TBL_USERS . " SET busena = 'blokuotas' WHERE prisijungimoVardas = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }
@@ -114,7 +114,7 @@ class AdminProcess {
             header("Location: " . $session->referrer);
         }
         /* Delete user from database */ else {
-            $q = "UPDATE " . TBL_USERS . " SET busena = 'aktyvus' WHERE username = '$subuser'";
+            $q = "UPDATE " . TBL_USERS . " SET busena = 'aktyvus' WHERE prisijungimoVardas = '$subuser'";
             $database->query($q);
             header("Location: " . $session->referrer);
         }

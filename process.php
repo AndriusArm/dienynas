@@ -68,40 +68,6 @@ class Process {
         $retval = $session->logout();
         header("Location: index.php");
     }
- 
-    /**
-     * procRegister - Processes the user submitted registration form,
-     * if errors are found, the user is redirected to correct the
-     * information, if not, the user is effectively registered with
-     * the system and an email is (optionally) sent to the newly
-     * created user.
-     */
-    function procRegister() {
-        global $session, $form;
-        /* Convert username to all lowercase (by option) */
-        if (ALL_LOWERCASE) {
-            $_POST['user'] = strtolower($_POST['user']);
-        }
-        /* Registration attempt */
-        $retval = $session->register($_POST['user'], $_POST['pass'], $_POST['email']);
-
-        /* Registration Successful */
-        if ($retval == 0) {
-            $_SESSION['reguname'] = $_POST['user'];
-            $_SESSION['regsuccess'] = true;
-            header("Location: " . $session->referrer);
-        }
-        /* Error found with form */ else if ($retval == 1) {
-            $_SESSION['value_array'] = $_POST;
-            $_SESSION['error_array'] = $form->getErrorArray();
-            header("Location: " . $session->referrer);
-        }
-        /* Registration attempt failed */ else if ($retval == 2) {
-            $_SESSION['reguname'] = $_POST['user'];
-            $_SESSION['regsuccess'] = false;
-            header("Location: " . $session->referrer);
-        }
-    }
 
     /**
      * procForgotPass - Validates the given username then if
