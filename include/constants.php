@@ -36,12 +36,14 @@ define("TBL_NAUJIENA", "naujiena");
  * also add additional level specifications.
  * Levels must be digits between 0-9.
  */
-define("ADMIN_NAME", "Moderatorius");
+define("ADMIN_NAME", "Administratorius");
 define("MANAGER_NAME", "Mokytojas");
+define("PARENT_NAME", "Tėvas");
 define("USER_NAME", "Mokinys");
 define("GUEST_NAME", "Svečias");
 define("ADMIN_LEVEL", 9);
 define("MANAGER_LEVEL", 5);
+define("PARENT_LEVEL", 3);
 define("USER_LEVEL", 1);
 define("GUEST_LEVEL", 0);
 

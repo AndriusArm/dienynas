@@ -28,7 +28,7 @@ if (!$session->isAdministratorius()) {
 function displayUsers() {
     global $database;
     $q = "SELECT prisijungimoVardas, lygis, vardas, pavarde "
-            . "FROM " . TBL_USERS . " ORDER BY lygis DESC,prisijungimoVardas";
+            . "FROM " . TBL_USERS . " WHERE busena = 'aktyvus' ORDER BY lygis DESC,prisijungimoVardas";
     $result = $database->query($q);
     /* Error occurred, return given name by default */
     $num_rows = mysqli_num_rows($result);
