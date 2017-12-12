@@ -226,13 +226,9 @@ function displayBannedUsers() {
                 <?php
                 displayBannedUsers();
                 ?>
-<<<<<<< HEAD
-				<br><br>
-=======
-                       
-                             
 
->>>>>>> 3df55babc7130c57d2f6e395574062c45ecb40d0
+				<br><br>
+
     <?php
     echo "<tr><td>";
     include("../include/footer.php");

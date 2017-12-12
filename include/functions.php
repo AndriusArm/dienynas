@@ -81,16 +81,16 @@ function scheduleDayStudent($weekDay, $date){
         {
             echo'<tbody>';
             echo'<td>'. $i."</td>";
-            echo'<th>'. $row['laikas']."</th>";
+            echo'<td>'. $row['laikas']."</td>";
             $entry = getHomeWorkID($date, $row['id_KlasesPamoka']);
             if ($entry){
-                echo '<th><a href="tvarkarastisRead.php?id='.$entry['id_Irasas'].'">'. $row['pavadinimas']."</th>";
+                echo '<td><a href="tvarkarastisRead.php?id='.$entry['id_Irasas'].'">'. $row['pavadinimas']."</td>";
             }else{
-                echo'<th>'. $row['pavadinimas']."</th>";
+                echo'<td>'. $row['pavadinimas']."</td>";
             }
 
-            echo'<th>'. $row['kabinetas']."</th>";
-            echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+            echo'<td>'. $row['kabinetas']."</td>";
+            echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
             $i=$i+1;
             echo'</tbody>';
         }
@@ -103,12 +103,13 @@ function scheduleDayTeacher($date, $weekday){
     
     
     $vart = $session->userinfo["id_Vartotojas"];
-    $query2 =   "SELECT laikas, pavadinimas, kabinetas, klase, vardas, pavarde, `id_KlasesPamoka` FROM `klase`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
+    $query2 =   "SELECT laikas, pavadinimas, kabinetas, klase, vardas, pavarde, `id_KlasesPamoka` FROM `klase`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka`
                 WHERE `vartotojas`.id_Vartotojas = $vart 
                 && klasespamoka.fk_Mokytojas = vartotojas.id_Vartotojas
                 && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                 && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                 && `pamokoslaikas`.`savaitesDiena` = '$weekday'
+				&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
                 ORDER BY laikas";
     $result = $database->query($query2);
     echo '<table>';
@@ -122,10 +123,10 @@ function scheduleDayTeacher($date, $weekday){
     {
             echo'<tbody>';
             echo'<td>'. $i."</td>";
-            echo'<th>'. $row['laikas']."</th>";
-            echo'<th><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</th>";
-            echo'<th>'. $row['kabinetas']."</th>";
-            echo'<th>'. $row['klase'] ."</th>";
+            echo'<td>'. $row['laikas']."</td>";
+            echo'<td><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</td>";
+            echo'<td>'. $row['kabinetas']."</td>";
+            echo'<td>'. $row['klase'] ."</td>";
             $i=$i+1;
             echo'</tbody>';
     }
