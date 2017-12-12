@@ -21,7 +21,7 @@ if (isset($session) && $session->logged_in) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <table width=110% border="0" cellspacing="0" cellpadding="0" >       
+    <table width=100% border="0" cellspacing="0" cellpadding="0" >       
         <nav class="navbar navbar-inverse">
         <ul class="nav navbar-nav">
         <?php
@@ -40,8 +40,8 @@ if (isset($session) && $session->logged_in) {
         //Mokytojo sàsaja ir tvarkaraðtis rodoma tik mokytojui
         if ($session->isMokytojas()) {
     
-            echo "<a href=\"" . $path . "mano_mokiniai.php\">Mano mokiniai</a> &nbsp;&nbsp;";
-            echo "<a href=\"" . $path . "mokytojo_tvarkarastis.php\">Mano tvarkaraštis</a> &nbsp;&nbsp;";
+            echo "<li><a href=\"" . $path . "mano_mokiniai.php\">Mano mokiniai</a></li> &nbsp;&nbsp;";
+            echo "<li><a href=\"" . $path . "mokytojo_tvarkarastis.php\">Mano tvarkaraštis</a><li> &nbsp;&nbsp;";
         
         }
         //Administratoriaus sàsaja rodoma tik administratoriui
@@ -51,12 +51,14 @@ if (isset($session) && $session->logged_in) {
             echo "<li><a href=\"" . $path . "admin/students.php\">Mokiniai</a></li>;";
         }
         ?>
-        <ul class="nav navbar-nav navbar-right">
-        <li><a href="process.php"><span class="glyphicon glyphicon-user"></span> Atsijungti</a></li>
-        </ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="process.php"><span class="glyphicon glyphicon-log-in"></span> Atsijungti</a></li>
+</ul>
 
-        <ul></ul>
-        <ul></ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href=""><span class="glyphicon glyphicon-user"></span> <?php echo $session->username?></a></li>
+</ul>
+
         </ul>
         </nav>
 
