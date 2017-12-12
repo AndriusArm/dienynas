@@ -78,19 +78,27 @@ if (!$session->isAdministratorius()) {
 							$kabinetas = $_POST['kabinetas'];
 							$laikas = $_POST['laikas'];
 							$diena = $_POST['diena'];
-							var_dump($klase);
-							var_dump($kabinetas);
-							var_dump($laikas);
-							var_dump($diena);
-							if($klase != 0 & $kabinetas != "0" & $laikas != "0" & $diena != "0"){
-							$query="INSERT INTO `pamokoslaikas` (laikas, kabinetas, savaitesDiena, fk_KlasesPamoka) VALUES 
-							('$laikas', '$kabinetas', '$diena', '$klase')";
+							if($klase != 0 & $kabinetas == '' & $laikas == "0" & $diena != "0"){
+							$query="UPDATE pamokoslaikas SET savaitesDiena = '$diena' WHERE id_Pamokoslaikas = $klase";
+							$database->query($query);}
+							else if($klase != 0 & $kabinetas == '' & $laikas != "0" & $diena == "0"){
+							$query="UPDATE pamokoslaikas SET laikas = '$laikas' WHERE id_Pamokoslaikas = $klase";
+							$database->query($query);}
+							else if($klase != 0 & $kabinetas != '' & $laikas == "0" & $diena == "0"){
+							$query="UPDATE pamokoslaikas SET kabinetas = $kabinetas WHERE id_Pamokoslaikas = $klase";
 							$database->query($query);
-						} 	else {
+						} 	else if($klase == 0 & $kabinetas == '' & $laikas == "0" & $diena == "0") {
 							?>
 								<div class="alert">
 								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-								Nepasirinkta pamoka, laikas, kabinetas arba savaitės diena
+								Nepasirinkta pamoka
+								</div>
+								<?php
+								} else {
+							?>
+								<div class="alert">
+								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+								Galite keisti tik po vieną pasirinkimą
 								</div>
 								<?php
 								}
@@ -163,20 +171,21 @@ if (!$session->isAdministratorius()) {
 							<br>
 							<?php
 							echo'Pamoka ';
-							$query1 = "SELECT * FROM `klase`, `klasespamoka`, `pamoka`, `vartotojas` 
+							$query1 = "SELECT * FROM `klase`, `klasespamoka`, `pamoka`, `vartotojas`, `pamokoslaikas`
 							WHERE `klasespamoka`.fk_Klase = `klase`.id_Klase 
 							&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+							&& pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_Klasespamoka 
 							&& `vartotojas`.`id_Vartotojas` = `klasespamoka`.`fk_Mokytojas`";
 							echo'<select name="klase">';
 							echo'<option value="0">Pasirinkite...</option>';
 							$klase = $database->query($query1);
 							while ( $row=mysqli_fetch_assoc($klase)) {
-								echo "<option value='".$row['id_Klasespamoka']."'>".$row['klase'].", ".$row['pavadinimas'].", ".$row['vardas']." ".$row['pavarde']."</option>";
+								echo "<option value='".$row['id_Pamokoslaikas']."'>".$row['klase'].", ".$row['pavadinimas'].", ".$row['vardas']." ".$row['pavarde'].", ".$row['laikas'].", ".$row['kabinetas']." ".$row['savaitesDiena']."</option>";
 								}
 							echo"</select>";
 							echo"<br><br>";
 							?>
-							<p><label class="field" for="kabinetas">Kabinetas   </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value="<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
+							<p><label class="field" for="kabinetas">Kabinetas   </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value=''<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
 							<?php
 							echo'Laikas ';
 							?>
@@ -206,7 +215,7 @@ if (!$session->isAdministratorius()) {
 							</select>
 							<br><br>
 						</fieldset>
-						<p><input type="submit" class="submit" name="Keisti" value="Redaguoti"></p>
+						<p><input type="submit" class="submit" name="keisti" value="Keisti"></p>
 						</form>
 						</table>
 

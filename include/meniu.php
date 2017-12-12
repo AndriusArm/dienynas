@@ -26,7 +26,6 @@ if (isset($session) && $session->logged_in) {
         <ul class="nav navbar-nav">
         <?php
         echo "<li><a href=\"" . $path . "index.php\">Pagrindinis</a></li> &nbsp;&nbsp;"
-        . "<li><a href=\"" . $path . "naujienos.php\">Naujienos</a></li> &nbsp;&nbsp;"
         . "<li><a href=\"" . $path . "paskyra.php\">Paskyra</a></li> &nbsp;&nbsp;"
         . "<li><a href=\"" . $path . "zinutes.php\">Žinutės</a></li> &nbsp;&nbsp;";    
         
