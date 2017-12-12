@@ -108,12 +108,13 @@ function scheduleDayTeacher($date, $weekday){
     
     
     $vart = $session->userinfo["id_Vartotojas"];
-    $query2 =   "SELECT laikas, pavadinimas, kabinetas, klase, vardas, pavarde, `id_KlasesPamoka` FROM `klase`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
+    $query2 =   "SELECT laikas, pavadinimas, kabinetas, klase, vardas, pavarde, `id_KlasesPamoka` FROM `klase`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka`
                 WHERE `vartotojas`.id_Vartotojas = $vart 
                 && klasespamoka.fk_Mokytojas = vartotojas.id_Vartotojas
                 && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                 && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                 && `pamokoslaikas`.`savaitesDiena` = '$weekday'
+				&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
                 ORDER BY laikas";
     $result = $database->query($query2);
     echo '<table>';

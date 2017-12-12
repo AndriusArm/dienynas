@@ -180,9 +180,10 @@ if (!$session->isAdministratorius()) {
 							echo"</select>";
 							echo"<br><br>";
 							echo'Mokytojas ';
-							$query2 = "SELECT vardas, pavarde, id_Vartotojas, pavadinimas from klase, vartotojas, pamoka, klasespamoka 
+							$query2 = "SELECT DISTINCT vardas, pavarde, id_Vartotojas, pavadinimas from klase, vartotojas, pamoka, klasespamoka 
 							WHERE `klasespamoka`.`fk_Pamoka`  = `pamoka`.`id_Pamoka` 
-							&& `vartotojas`.`id_Vartotojas` = `klasespamoka`.`fk_Mokytojas`";
+							&& `vartotojas`.`id_Vartotojas` = `klasespamoka`.`fk_Mokytojas`
+							&& `klasespamoka`.`fk_Klase` = `klase`.`id_Klase`";
 							echo'<select name="mok">';
 							echo'<option value="0">Pasirinkite...</option>';
 							$mok = $database->query($query2);
@@ -213,7 +214,9 @@ if (!$session->isAdministratorius()) {
 						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
 						&& `pamokoslaikas`.`savaitesDiena` = 'Pirmadienis' 
 						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+						&& klase.id_Klase = klasespamoka.fk_Klase 
+						ORDER BY laikas ";
 							$result = $database->query($query);
 							echo '<table>';
 						echo'<th>'.'Nr.'."</th>";
@@ -226,10 +229,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -245,7 +248,9 @@ if (!$session->isAdministratorius()) {
 						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
 						&& `pamokoslaikas`.`savaitesDiena` = 'Antradienis' 
 						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+						&& klase.id_Klase = klasespamoka.fk_Klase 
+						ORDER BY laikas ";
 							$result = $database->query($query);
 							echo '<table>';
 						echo'<th>'.'Nr.'."</th>";
@@ -258,10 +263,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -277,7 +282,9 @@ if (!$session->isAdministratorius()) {
 						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
 						&& `pamokoslaikas`.`savaitesDiena` = 'Trečiadienis' 
 						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka
+						&& klase.id_Klase = klasespamoka.fk_Klase 
+						ORDER BY laikas ";
 							$result = $database->query($query);
 							echo '<table>';
 						echo'<th>'.'Nr.'."</th>";
@@ -290,10 +297,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -309,7 +316,9 @@ if (!$session->isAdministratorius()) {
 						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
 						&& `pamokoslaikas`.`savaitesDiena` = 'Ketvirtadienis' 
 						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+						&& klase.id_Klase = klasespamoka.fk_Klase 
+						ORDER BY laikas ";
 							$result = $database->query($query);
 							echo '<table>';
 						echo'<th>'.'Nr.'."</th>";
@@ -322,10 +331,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -341,7 +350,9 @@ if (!$session->isAdministratorius()) {
 						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
 						&& `pamokoslaikas`.`savaitesDiena` = 'Penktadienis' 
 						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka 
+						&& klase.id_Klase = klasespamoka.fk_Klase
+						ORDER BY laikas ";
 							$result = $database->query($query);
 							echo '<table>';
 						echo'<th>'.'Nr.'."</th>";
@@ -354,10 +365,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -374,6 +385,7 @@ if (!$session->isAdministratorius()) {
                         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                         && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                         && `pamokoslaikas`.`savaitesDiena` = 'Pirmadienis'
+						&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
 					    ORDER BY laikas";
 							$result = $database->query($query);
 							echo '<table>';
@@ -387,10 +399,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['klase'] ."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['klase'] ."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -406,6 +418,7 @@ if (!$session->isAdministratorius()) {
                         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                         && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                         && `pamokoslaikas`.`savaitesDiena` = 'Antradienis'
+						&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
 					    ORDER BY laikas";
 							$result = $database->query($query);
 							echo '<table>';
@@ -419,10 +432,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['klase'] ."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['klase'] ."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -438,6 +451,7 @@ if (!$session->isAdministratorius()) {
                         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                         && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                         && `pamokoslaikas`.`savaitesDiena` = 'Trečiadienis'
+						&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
 					    ORDER BY laikas";
 							$result = $database->query($query);
 							echo '<table>';
@@ -451,10 +465,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['klase'] ."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['klase'] ."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -470,6 +484,7 @@ if (!$session->isAdministratorius()) {
                         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                         && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                         && `pamokoslaikas`.`savaitesDiena` = 'Ketvirtadienis'
+						&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
 					    ORDER BY laikas";
 							$result = $database->query($query);
 							echo '<table>';
@@ -483,10 +498,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['klase'] ."</th>";
+							echo'<td>'. $row['laikas']."</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['klase'] ."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
@@ -502,6 +517,7 @@ if (!$session->isAdministratorius()) {
                         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
                         && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
                         && `pamokoslaikas`.`savaitesDiena` = 'Penktadienis'
+						&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
 					    ORDER BY laikas";
 							$result = $database->query($query);
 							echo '<table>';
@@ -515,10 +531,10 @@ if (!$session->isAdministratorius()) {
 						{
 							echo'<tbody>';
 							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['klase'] ."</th>";
+							echo'<td>'. $row['laikas']. "</td>";
+							echo'<td>'. $row['pavadinimas']."</td>";
+							echo'<td>'. $row['kabinetas']."</td>";
+							echo'<td>'. $row['klase'] ."</td>";
 							$i=$i+1;
 							echo'</tbody>';
 						}
