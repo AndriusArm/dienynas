@@ -1,5 +1,6 @@
 <?php
 include("include/session.php");
+include("include/functions.php");
 if ($session->logged_in) {
     ?>
     <html>
@@ -28,176 +29,50 @@ th, td {
                         <br> 
                         <div style="text-align: center;color:green">                   
                             <h1>Mano tvarkaraštis</h1>
-						</div><br>
-						<div style="text-align: left;color:black">                   
+                                </div><br>
+                                <?php
+                                $monday = date("Y-m-d",strtotime('monday this week'));
+                                $tuesday = date("Y-m-d",strtotime('tuesday this week'));
+                                $wednesday = date("Y-m-d",strtotime('wednesday this week'));
+                                $thursday = date("Y-m-d",strtotime('thursday this week'));                            
+                                $friday = date("Y-m-d",strtotime('friday this week'));
+                                echo"$monday..$friday";
+                                        
+                                ?>
+                                <div style="text-align: left;color:black">                   
                             <h3>Pirmadienis</h3>
-						</div>
-						<?php
-						$vart = $session->userinfo["id_Vartotojas"];
-						$query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
-						WHERE `mokinys`.id_Vartotojas = 3 
-						&& `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
-						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
-						&& `pamokoslaikas`.`savaitesDiena` = 'Pirmadienis' 
-						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
-						$result = $database->query($query2);
-						echo '<table>';
-						echo'<th>'.'Nr.'."</th>";
-						echo'<th>'.'Laikas'."</th>";
-						echo'<th>'.'Pamoka'."</th>";
-						echo'<th>'.'Kabinetas'."</th>";
-						echo'<th>'.'Mokytojas'."</th>";
-						$i=1;
-						while ($row = mysqli_fetch_array($result))
-						{
-							echo'<tbody>';
-							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
-							$i=$i+1;
-							echo'</tbody>';
-						}
-						echo '</table>';
-						?>
-						<br>
-							<div style="text-align: left;color:black">                   
+                                </div>
+                                <?php
+                                scheduleDayStudent('Pirmadienis', $monday);
+                                ?>
+                                <br>
+                                        <div style="text-align: left;color:black">                   
                             <h3>Antradienis</h3>
-						</div>
-						<?php
-						$vart = $session->userinfo["id_Vartotojas"];
-						$query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
-						WHERE `mokinys`.id_Vartotojas = 3 
-						&& `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
-						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
-						&& `pamokoslaikas`.`savaitesDiena` = 'Antradienis' 
-						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
-						$result = $database->query($query2);
-						echo '<table>';
-						echo'<th>'.'Nr.'."</th>";
-						echo'<th>'.'Laikas'."</th>";
-						echo'<th>'.'Pamoka'."</th>";
-						echo'<th>'.'Kabinetas'."</th>";
-						echo'<th>'.'Mokytojas'."</th>";
-						$i=1;
-						while ($row = mysqli_fetch_array($result))
-						{
-							echo'<tbody>';
-							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
-							$i=$i+1;
-							echo'</tbody>';
-						}
-						echo '</table>';
-						?>
-						<br>
-							<div style="text-align: left;color:black">                   
+                                </div>
+                                <?php
+                                        scheduleDayStudent('Antradienis',$tuesday);
+                                ?>
+                                <br>
+                                        <div style="text-align: left;color:black">                   
                             <h3>Trečiadienis</h3>
-						</div>
-						<?php
-						$vart = $session->userinfo["id_Vartotojas"];
-						$query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
-						WHERE `mokinys`.id_Vartotojas = 3 
-						&& `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
-						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
-						&& `pamokoslaikas`.`savaitesDiena` = 'Trečiadienis' 
-						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
-						$result = $database->query($query2);
-						echo '<table>';
-						echo'<th>'.'Nr.'."</th>";
-						echo'<th>'.'Laikas'."</th>";
-						echo'<th>'.'Pamoka'."</th>";
-						echo'<th>'.'Kabinetas'."</th>";
-						echo'<th>'.'Mokytojas'."</th>";
-						$i=1;
-						while ($row = mysqli_fetch_array($result))
-						{
-							echo'<tbody>';
-							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
-							$i=$i+1;
-							echo'</tbody>';
-						}
-						echo '</table>';
-						?>
-						<br>
-							<div style="text-align: left;color:black">                   
+                                </div>
+                                <?php
+                                        scheduleDayStudent('Treciadienis',$wednesday);
+                                ?>
+                                <br>
+                                        <div style="text-align: left;color:black">                   
                             <h3>Ketvirtadienis</h3>
-						</div>
-						<?php
-						$vart = $session->userinfo["id_Vartotojas"];
-						$query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
-						WHERE `mokinys`.id_Vartotojas = $vart 
-						&& `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
-						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
-						&& `pamokoslaikas`.`savaitesDiena` = 'Ketvirtadienis' 
-						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
-						$result = $database->query($query2);
-						echo '<table>';
-						echo'<th>'.'Nr.'."</th>";
-						echo'<th>'.'Laikas'."</th>";
-						echo'<th>'.'Pamoka'."</th>";
-						echo'<th>'.'Kabinetas'."</th>";
-						echo'<th>'.'Mokytojas'."</th>";
-						$i=1;
-						while ($row = mysqli_fetch_array($result))
-						{
-							echo'<tbody>';
-							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
-							$i=$i+1;
-							echo'</tbody>';
-						}
-						echo '</table>';
-						?>
-						<br>
-						<div style="text-align: left;color:black">                   
+                                </div>
+                                <?php
+                                        scheduleDayStudent('Ketvirtadienis',$thursday);
+                                ?>
+                                <br>
+                                <div style="text-align: left;color:black">                   
                         <h3>Penktadienis</h3>
-						</div>
-						<?php
-						$vart = $session->userinfo["id_Vartotojas"];
-						$query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
-						WHERE `mokinys`.id_Vartotojas = 3 
-						&& `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
-						&& `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
-						&& `pamokoslaikas`.`savaitesDiena` = 'Penktadienis' 
-						&& `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
-						&& klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
-						$result = $database->query($query2);
-						echo '<table>';
-						echo'<th>'.'Nr.'."</th>";
-						echo'<th>'.'Laikas'."</th>";
-						echo'<th>'.'Pamoka'."</th>";
-						echo'<th>'.'Kabinetas'."</th>";
-						echo'<th>'.'Mokytojas'."</th>";
-						$i=1;
-						while ($row = mysqli_fetch_array($result))
-						{
-							echo'<tbody>';
-							echo'<td>'. $i."</td>";
-							echo'<th>'. $row['laikas']."</th>";
-							echo'<th>'. $row['pavadinimas']."</th>";
-							echo'<th>'. $row['kabinetas']."</th>";
-							echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
-							$i=$i+1;
-							echo'</tbody>';
-						}
-						echo '</table>';
-						?>
+                            </div>
+                            <?php
+                                scheduleDayStudent('Penktadienis',$friday);
+                            ?>
                         <?php
                         include("include/footer.php");
                         ?>

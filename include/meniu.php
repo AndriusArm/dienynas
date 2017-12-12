@@ -13,7 +13,7 @@ if (isset($session) && $session->logged_in) {
         echo "Prisijungęs vartotojas: <b>$session->username</b> <br>";
         echo "</td></tr><tr><td>";
         echo "[<a href=\"" . $path . "index.php\">Pagrindinis</a>] &nbsp;&nbsp;"
-		. "[<a href=\"" . $path . "naujienos.php\">Naujienos</a>] &nbsp;&nbsp;"
+		//. "[<a href=\"" . $path . "naujienos.php\">Naujienos</a>] &nbsp;&nbsp;"
         . "[<a href=\"" . $path . "paskyra.php\">Paskyra</a>] &nbsp;&nbsp;"
         . "[<a href=\"" . $path . "zinutes.php\">Žinutės</a>] &nbsp;&nbsp;";
 		//Mokinio dienynas ir tvarkaraštis rodomas tik mokiniui
