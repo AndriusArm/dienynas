@@ -49,6 +49,16 @@ CREATE TABLE `irasas` (
   `fk_KlasesPamoka` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `irasas`
+--
+
+INSERT INTO `irasas` (`data`, `pamokosTema`, `klasesDarbas`, `namuDarbai`, `id_Irasas`, `fk_KlasesPamoka`) VALUES
+('2017-12-11', 'A. Baranauskas', 'Buvo rašomas rašinėlis (500) žodžių apie A. Baranauską.', 'Perskaityti "Anykščių šilelį" sekančiai pamokai.', 1, 1),
+('2017-12-11', 'test', 'test', 'wat', 3, 9),
+('2017-12-13', 'testas', '', '', 11, 1),
+('2017-12-15', 'check', 'tjis', '', 12, 1),
+('2017-12-14', 'in', 'ser', 'tas', 13, 1);
 -- --------------------------------------------------------
 
 --
@@ -119,6 +129,13 @@ CREATE TABLE `lankomumas` (
   `fk_Mokinys` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+--
+-- Dumping data for table `lankomumas`
+--
+
+INSERT INTO `lankomumas` (`data`, `arBuvo`, `id_Lankomumas`, `fk_KlasesPamoka`, `fk_Mokinys`) VALUES
+('2017-12-11', 0, 77, 1, 3);
 -- --------------------------------------------------------
 
 --
@@ -231,9 +248,21 @@ CREATE TABLE `pazymys` (
   `tipas` char(20) DEFAULT NULL,
   `id_Pazymys` int(11) NOT NULL,
   `fk_Mokinys` int(11) NOT NULL,
-  `fk_KlasesPamoka` int(11) NOT NULL
+  `fk_KlasesPamoka` int(11) NOT NULL,
+  `data` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `pazymys`
+--
+
+INSERT INTO `pazymys` (`verte`, `tipas`, `id_Pazymys`, `fk_Mokinys`, `fk_KlasesPamoka`, `data`) VALUES
+(NULL, NULL, 1, 3, 3, '2017-12-07'),
+(7, '1', 2, 3, 1, '2017-12-08'),
+(7, '', 3, 3, 2, '2017-12-07'),
+(6, '', 10, 10, 1, '2017-12-09'),
+(NULL, '', 11, 3, 1, '2017-12-09'),
+(NULL, '', 12, 3, 1, '2017-12-10');
 -- --------------------------------------------------------
 
 --
@@ -390,7 +419,7 @@ ALTER TABLE `atsiskaitymas`
 -- AUTO_INCREMENT for table `irasas`
 --
 ALTER TABLE `irasas`
-  MODIFY `id_Irasas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Irasas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `klase`
 --
@@ -405,7 +434,7 @@ ALTER TABLE `klasespamoka`
 -- AUTO_INCREMENT for table `lankomumas`
 --
 ALTER TABLE `lankomumas`
-  MODIFY `id_Lankomumas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Lankomumas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 --
 -- AUTO_INCREMENT for table `pamoka`
 --
@@ -420,7 +449,7 @@ ALTER TABLE `pamokoslaikas`
 -- AUTO_INCREMENT for table `pazymys`
 --
 ALTER TABLE `pazymys`
-  MODIFY `id_Pazymys` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Pazymys` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `vartotojas`
 --
