@@ -37,7 +37,14 @@ if (!$session->isAdministratorius()) {
                             if ($_POST['klasesPavadinimas'] != ''){
                                 $sql = "INSERT INTO klase (klase) VALUES ('".$_POST["klasesPavadinimas"]."')";
                                 $result = $database->query($sql);
-                            }
+                            } else {
+							?>
+								<div class="alert">
+								<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+								Įveskite klasės pavadinimą
+								</div>
+								<?php
+								} 
 
                           }
                         ?>

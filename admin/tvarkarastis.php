@@ -43,10 +43,6 @@ if (!$session->isAdministratorius()) {
 							$kabinetas = $_POST['kabinetas'];
 							$laikas = $_POST['laikas'];
 							$diena = $_POST['diena'];
-							var_dump($klase);
-							var_dump($kabinetas);
-							var_dump($laikas);
-							var_dump($diena);
 							if($klase != 0 & $kabinetas != "0" & $laikas != "0" & $diena != "0"){
 							$query="INSERT INTO `pamokoslaikas` (laikas, kabinetas, savaitesDiena, fk_KlasesPamoka) VALUES 
 							('$laikas', '$kabinetas', '$diena', '$klase')";
