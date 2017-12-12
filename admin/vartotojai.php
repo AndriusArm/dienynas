@@ -144,6 +144,7 @@ function displayBannedUsers() {
                 <?php
                 displayBannedUsers();
                 ?>
+				<br><br>
     <?php
     echo "<tr><td>";
     include("../include/footer.php");

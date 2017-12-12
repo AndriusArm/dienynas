@@ -126,7 +126,7 @@ if (!$session->isAdministratorius()) {
 								echo "<option value='".$row['id_Klasespamoka']."'>".$row['klase']." ".$row['pavadinimas']." ".$row['vardas']." ".$row['pavarde']."</option>";
 								}
 							echo"</select>";
-							echo"<br>";
+							echo"<br><br>";
 							?>
 							<p><label class="field" for="kabinetas">Kabinetas </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value="<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
 							<?php
