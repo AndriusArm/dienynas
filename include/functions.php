@@ -56,3 +56,118 @@ function fillGradesNoHTML($userID, $subjectID, &$grades, $fromDate, $toDate){
         }
     }
 }
+
+function scheduleDayStudent($weekDay, $date){
+    global $database;
+    global $session;
+    
+    $vart = $session->userinfo["id_Vartotojas"];
+        $query2 = "SELECT laikas, pavadinimas, kabinetas, vardas, pavarde, id_KlasesPamoka FROM `mokinys`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
+        WHERE `mokinys`.id_Vartotojas = $vart 
+        && `klasespamoka`.fk_Klase = `mokinys`.fk_Klase 
+        && `klasespamoka`.`fk_Mokytojas` = `vartotojas`.`id_Vartotojas` 
+        && `pamokoslaikas`.`savaitesDiena` = '$weekDay' 
+        && `pamokoslaikas`.`fk_KlasesPamoka` = `klasespamoka`.`id_KlasesPamoka` 
+        && klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
+        $result = $database->query($query2);
+        echo '<table>';
+        echo'<th>'.'Nr.'."</th>";
+        echo'<th>'.'Laikas'."</th>";
+        echo'<th>'.'Pamoka'."</th>";
+        echo'<th>'.'Kabinetas'."</th>";
+        echo'<th>'.'Mokytojas'."</th>";
+        $i=1;
+        while ($row = mysqli_fetch_array($result))
+        {
+            echo'<tbody>';
+            echo'<td>'. $i."</td>";
+            echo'<th>'. $row['laikas']."</th>";
+            $entry = getHomeWorkID($date, $row['id_KlasesPamoka']);
+            if ($entry){
+                echo '<th><a href="tvarkarastisRead.php?id='.$entry['id_Irasas'].'">'. $row['pavadinimas']."</th>";
+            }else{
+                echo'<th>'. $row['pavadinimas']."</th>";
+            }
+
+            echo'<th>'. $row['kabinetas']."</th>";
+            echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+            $i=$i+1;
+            echo'</tbody>';
+        }
+        echo '</table>';
+}
+
+function scheduleDayTeacher($date, $weekday){
+    global $database;
+    global $session;
+    
+    
+    $vart = $session->userinfo["id_Vartotojas"];
+    $query2 =   "SELECT laikas, pavadinimas, kabinetas, klase, vardas, pavarde, `id_KlasesPamoka` FROM `klase`, `klasespamoka`, `vartotojas`, `pamokoslaikas`, `pamoka` 
+                WHERE `vartotojas`.id_Vartotojas = $vart 
+                && klasespamoka.fk_Mokytojas = vartotojas.id_Vartotojas
+                && klasespamoka.fk_Pamoka = pamoka.id_Pamoka
+                && pamokoslaikas.fk_KlasesPamoka = klasespamoka.id_KlasesPamoka
+                && `pamokoslaikas`.`savaitesDiena` = '$weekday'
+                ORDER BY laikas";
+    $result = $database->query($query2);
+    echo '<table>';
+    echo'<th>'.'Nr.'."</th>";
+    echo'<th>'.'Laikas'."</th>";
+    echo'<th>'.'Pamoka'."</th>";
+    echo'<th>'.'Kabinetas'."</th>";
+    echo'<th>'.'Klasė'."</th>";
+    $i=1;
+    while ($row = mysqli_fetch_array($result))
+    {
+            echo'<tbody>';
+            echo'<td>'. $i."</td>";
+            echo'<th>'. $row['laikas']."</th>";
+            echo'<th><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</th>";
+            echo'<th>'. $row['kabinetas']."</th>";
+            echo'<th>'. $row['klase'] ."</th>";
+            $i=$i+1;
+            echo'</tbody>';
+    }
+    echo '</table>';
+}
+
+function getHomeWorkID($date, $klasesPamoka){
+    global $database;
+    
+    $query = "SELECT id_Irasas FROM `irasas` WHERE irasas.fk_Klasespamoka = $klasesPamoka AND `data`= '$date' GROUP BY id_Irasas";
+    $result = $database->query($query);
+    if(mysqli_num_rows($result) == 0){
+        return false;
+    }else{
+        return mysqli_fetch_array($result);
+    }            
+}
+
+function getHomeWork($id){
+    global $database;
+
+    if(preg_match('/^[0-9]/', $id) == 0){
+        header("Location: index.php");
+        die();
+    }
+    $query = "SELECT `pamokosTema`, `klasesDarbas`, `namuDarbai` FROM `irasas` WHERE `irasas`.id_Irasas = $id";
+    $result = $database->query($query);
+    if(mysqli_num_rows($result) == 0){
+        return false;
+    }else{
+        return mysqli_fetch_array($result);
+    }            
+}
+
+function getHomeWorkByDateFK($date, $fk){
+    global $database;
+    
+    $query = "SELECT `pamokosTema`, `klasesDarbas`, `namuDarbai`, `id_Irasas` FROM `irasas` WHERE `data`='$date' AND `fk_KlasesPamoka` = '$fk'";
+    $result = $database->query($query);
+    if(mysqli_num_rows($result) == 0){
+        return false;
+    }else{
+        return mysqli_fetch_array($result);
+    } 
+}
