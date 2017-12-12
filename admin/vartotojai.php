@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <?php
 include("../include/session.php");
 
@@ -19,6 +23,76 @@ if (!$session->isAdministratorius()) {
                         $_SESSION['path'] = '../';
                         include("../include/meniu.php");
 						include("../include/admin_meniu.php");
+
+                   ?>     <div class="row">
+                                <div class="col-md-12">
+                                <div class="panel-body">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-1">Pridėti informaciją apie vartotoją</button>
+                                <table class="table table-fixed table-hover table-striped table-bordered">
+                                <thead>
+                                  <p></p> 
+                                 <div></div>
+                                    <div class="modal fade" id="modal-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                 <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h3 class="modal-title">Įtraukti tėvus į sąrašą</h3>
+                                                 </div>
+                                                    <?php
+                                                      if(isset($_POST['save']))
+                                                    {
+                                                        $lygis = $_POST['lygis'];
+                                                        //sukuriamas vartotojas
+                                                        $sql    = "INSERT INTO vartotojas (prisijungimoVardas, slaptazodis, vardas, pavarde, lygis)
+                                                        VALUES ('".$_POST["vartotojoVardas"]."','".$_POST["slaptazodis"]."','".$_POST["vardas"]."','".$_POST["pavarde"]."', '$lygis')";
+                                                        $result = $database->query($sql);
+                                                    }?>
+                                                 <form action="" method="post">
+                                                 <div class="modal-body">
+                                                  <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Vardas:</label>
+                                                    <input type="text" name="vardas" class="form-control" id="recipient-name">
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Pavardė:</label>
+                                                    <input type="text" name="pavarde" class="form-control" id="recipient-name">
+                                                  </div>
+                                                 <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Vartotojo vardas:</label>
+                                                    <input type="text" name="vartotojoVardas" class="form-control" id="recipient-name">
+                                                  </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Slaptažodis: </label>
+                                                    <input class="form-control" type="password" value="hunter2" id="example-password-input" name = "slaptazodis">
+                                                  </div>
+                                                 <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Vartotojo lygis: </label>
+                                                    <select name = lygis>
+                                                          <option value="3">3</option>
+                                                          <option value="5">5</option>
+                                                    </select>
+                                                    <p>3-tėvas, 5-mokytojas</p>
+                                                  </div>
+                                                 <div class="modal-footer">
+                                                    <a href="" class="btn btn-default" data-dismiss="modal">Uždaryti</a>
+                                                    <button type="submit" class="btn btn-primary" name="save">Išsaugoti</button>
+                                                </select>
+                                                  </div>
+                                                 </div>
+                                                  </form>                           
+                                    </thead>
+                                    <script>
+                                  $('.openModal').click(function(){
+                                      var id = $(this).attr('data-id');
+                                      $.ajax({type:'GET',url:"backend.php?id="+id,cache:false,success:function(result){
+                                          $(".modal-content").html(result);
+                                      }});
+                                  });
+                                </script>      
+                                  </table>
+                            </form>
+                            <?php
 
 /**
  * displayUsers - Displays the users database table in
@@ -119,31 +193,42 @@ function displayBannedUsers() {
     }
     echo "</table><br>\n";
 }
+
 ?>
+
 
                                     <?php
                                     /**
                                      * Display Users Table
                                      */
                                     ?>
+
                                     <h3>Sistemos vartotojai:</h3>
                                     <?php
                                     displayUsers();
                                     ?>
+
                                     <br>
                                 </td>
                             </tr>
-                            <tr><td><br></td></tr>           
+                                    
         <tr><td>
+               <div class="row">
+        <div class="col-md-12">
+        <div class="panel-body">
                 <?php
                 /**
                  * Display Banned Users Table
                  */
                 ?>
+
                 <h3>Blokuoti vartotojai:</h3>
                 <?php
                 displayBannedUsers();
                 ?>
+                       
+                             
+
     <?php
     echo "<tr><td>";
     include("../include/footer.php");
@@ -152,6 +237,11 @@ function displayBannedUsers() {
     </table>       
     </body>
     </html>
+
+    </select>
+    </div>
+    </div>
+    </form>
     <?php
 }
 ?>
