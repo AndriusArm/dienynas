@@ -71,29 +71,34 @@ function scheduleDayStudent($weekDay, $date){
         && klasespamoka.fk_Pamoka = pamoka.id_Pamoka ORDER BY laikas ";
         $result = $database->query($query2);
         echo '<table>';
-        echo'<th>'.'Nr.'."</th>";
-        echo'<th>'.'Laikas'."</th>";
-        echo'<th>'.'Pamoka'."</th>";
-        echo'<th>'.'Kabinetas'."</th>";
-        echo'<th>'.'Mokytojas'."</th>";
+        //echo '<thead>';
+        echo"<tr>\r\n";
+        echo'<th>'.'Nr.'."</th>\r\n";
+        echo'<th>'.'Laikas'."</th>\r\n";
+        echo'<th>'.'Pamoka'."</th>\r\n";
+        echo'<th>'.'Kabinetas'."</th>\r\n";
+        echo'<th>'.'Mokytojas'."</th>\r\n";
+        echo"</tr>\r\n";
+        //echo '</thead>';
         $i=1;
+        //echo'<tbody>';
         while ($row = mysqli_fetch_array($result))
-        {
-            echo'<tbody>';
-            echo'<td>'. $i."</td>";
-            echo'<th>'. $row['laikas']."</th>";
+        {         
+            echo '<tr>';
+            echo'<td>'. $i."</td>\r\n";
+            echo'<td>'. $row['laikas']."</td>\r\n";
             $entry = getHomeWorkID($date, $row['id_KlasesPamoka']);
             if ($entry){
-                echo '<th><a href="tvarkarastisRead.php?id='.$entry['id_Irasas'].'">'. $row['pavadinimas']."</th>";
+                echo '<td><a href="tvarkarastisRead.php?id='.$entry['id_Irasas'].'">'. $row['pavadinimas']."</a></td>\r\n";
             }else{
-                echo'<th>'. $row['pavadinimas']."</th>";
+                echo'<td>'. $row['pavadinimas']."</td>\r\n";
             }
-
-            echo'<th>'. $row['kabinetas']."</th>";
-            echo'<th>'. $row['vardas'] . " " .$row['pavarde']."</th>";
+            echo'<td>'. $row['kabinetas']."</td>\r\n";
+            echo'<td>'. $row['vardas'] . " " .$row['pavarde']."</td>\r\n";
             $i=$i+1;
-            echo'</tbody>';
+            echo '</tr>';
         }
+        //echo'</tbody>';
         echo '</table>';
 }
 
@@ -122,10 +127,10 @@ function scheduleDayTeacher($date, $weekday){
     {
             echo'<tbody>';
             echo'<td>'. $i."</td>";
-            echo'<th>'. $row['laikas']."</th>";
-            echo'<th><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</th>";
-            echo'<th>'. $row['kabinetas']."</th>";
-            echo'<th>'. $row['klase'] ."</th>";
+            echo'<td>'. $row['laikas']."</td>";
+            echo'<td><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</a></td>";
+            echo'<td>'. $row['kabinetas']."</td>";
+            echo'<td>'. $row['klase'] ."</td>";
             $i=$i+1;
             echo'</tbody>';
     }

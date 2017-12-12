@@ -6,13 +6,14 @@ if ($session->logged_in) {
     <html>
 	<style>
 	table {
-    border-collapse: collapse;
-}
+            border-collapse: collapse;
+	}
 
-th, td {
-    padding: 8px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
+	th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+	}
 	</style>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
