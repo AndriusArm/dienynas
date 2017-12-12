@@ -114,7 +114,6 @@ if (!$session->isAdministratorius()) {
                         <form action="" method="post">
 						<fieldset>
 							<legend>Pasirinkite pamoką</legend>
-							<br>
 							<?php
 							echo'Pamoka ';
 							$query6 = "SELECT * from pamoka";
@@ -148,7 +147,7 @@ if (!$session->isAdministratorius()) {
 								echo "<option value='".$row['id_Pamoka']."'>".$row['pavadinimas']."</option>";
 								}
 							echo"</select>";
-							echo"<br>";
+							echo"<br><br>";
 							?>
 							<p><label class="field" for="pavadinimas">Naujas pavadinimas </label><input type="text" id="pavadinimas" name="pavadinimas" class="textbox-100" value="<?php echo isset($fields['pavadinimas']) ? $fields['pavadinimas'] : ''; ?>" /></p>
 						</fieldset>
@@ -175,9 +174,9 @@ if (!$session->isAdministratorius()) {
 								echo "<option value='".$row['id_Klasespamoka']."'>".$row['klase'].", ".$row['pavadinimas'].", ".$row['vardas']." ".$row['pavarde']."</option>";
 								}
 							echo"</select>";
-							echo"<br>";
+							echo"<br><br>";
 							?>
-							<p><label class="field" for="kabinetas">Kabinetas </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value="<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
+							<p><label class="field" for="kabinetas">Kabinetas   </label><input type="text" id="kabinetas" name="kabinetas" class="textbox-100" value="<?php echo isset($fields['kabinetas']) ? $fields['kabinetas'] : ''; ?>" /></p>
 							<?php
 							echo'Laikas ';
 							?>

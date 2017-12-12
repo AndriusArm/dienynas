@@ -17,7 +17,7 @@ include("include/session.php");
                 include("include/meniu.php");
                 ?>
                 <div style="text-align: center;color:white">
-                    <br><br>
+                    
                     <h1>Sveiki atvykę į Elektroninio dienyno sistemą!</h1>
                 </div><br>
                 <?php

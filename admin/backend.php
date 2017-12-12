@@ -17,7 +17,7 @@ $row=mysqli_fetch_assoc($mokiniai);
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
   <h4 class="modal-title" id="myModalLabel">Mokinio informacijos peržiūra</h4>
 </div>
-<div class="modal-body">
+
   <div class="panel panel-info" ">
     <div class="panel-body">
       <div class="row">
