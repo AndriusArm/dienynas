@@ -73,11 +73,11 @@ function scheduleDayStudent($weekDay, $date){
         echo '<table>';
         //echo '<thead>';
         echo"<tr>\r\n";
-        echo'<th>'.'Nr.'."</th>\r\n";
-        echo'<th>'.'Laikas'."</th>\r\n";
-        echo'<th>'.'Pamoka'."</th>\r\n";
-        echo'<th>'.'Kabinetas'."</th>\r\n";
-        echo'<th>'.'Mokytojas'."</th>\r\n";
+        echo"<th style=\"padding: 0 16px 0 16px\">".'Nr.'."</th>\r\n";
+        echo"<th style=\"padding: 0 16px 0 16px\">".'Laikas'."</th>\r\n";
+        echo"<th style=\"padding: 0 16px 0 16px\">".'Pamoka'."</th>\r\n";
+        echo"<th style=\"padding: 0 16px 0 16px\">".'Kabinetas'."</th>\r\n";
+        echo"<th style=\"padding: 0 16px 0 16px\">".'Mokytojas'."</th>\r\n";
         echo"</tr>\r\n";
         //echo '</thead>';
         $i=1;
@@ -117,25 +117,27 @@ function scheduleDayTeacher($date, $weekday){
 				&& `klase`.`id_Klase` = `Klasespamoka`.`fk_Klase`
                 ORDER BY laikas";
     $result = $database->query($query2);
-    echo '<table>';
-    echo'<th>'.'Nr.'."</th>";
-    echo'<th>'.'Laikas'."</th>";
-    echo'<th>'.'Pamoka'."</th>";
-    echo'<th>'.'Kabinetas'."</th>";
-    echo'<th>'.'Klasė'."</th>";
+    echo "<table>";
+    echo "<tr>\r\n";
+    echo "<th style=\"padding: 0 16px 0 16px\">".'Nr.'."</th>\r\n";
+    echo "<th style=\"padding: 0 16px 0 16px\">".'Laikas'."</th>\r\n";
+    echo "<th style=\"padding: 0 16px 0 16px\">".'Pamoka'."</th>\r\n";
+    echo "<th style=\"padding: 0 16px 0 16px\">".'Kabinetas'."</th>\r\n";
+    echo "<th style=\"padding: 0 16px 0 16px\">".'Klasė'."</th>\r\n";
+    echo "</tr>";
     $i=1;
     while ($row = mysqli_fetch_array($result))
     {
-            echo'<tbody>';
-            echo'<td>'. $i."</td>";
-            echo'<td>'. $row['laikas']."</td>";
-            echo'<td><a href=tvarkarastisInsert.php?date='.$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</a></td>";
-            echo'<td>'. $row['kabinetas']."</td>";
-            echo'<td>'. $row['klase'] ."</td>";
-            $i=$i+1;
-            echo'</tbody>';
+        echo "<tr>";
+        echo"<td>". $i."</td>\r\n";
+        echo"<td>". $row['laikas']."</td>\r\n";
+        echo"<td><a href=tvarkarastisInsert.php?date=".$date.'&id='.$row['id_KlasesPamoka'].'>'. $row['pavadinimas']."</a></td>\r\n";
+        echo"<td>". $row['kabinetas']."</td>\r\n";
+        echo"<td>". $row['klase'] ."</td>\r\n";
+        $i=$i+1;
+        echo "</tr>";
     }
-    echo '</table>';
+    echo "</table>\r\n";
 }
 
 function getHomeWorkID($date, $klasesPamoka){
