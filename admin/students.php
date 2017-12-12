@@ -39,13 +39,13 @@ if (!$session->isAdministratorius()) {
 					  }
 					?>
 					<div class="center">
-					<h2>Klasių valdymas</h2>
+					<h1 style = "color:white;">Klasių valdymas</h1>
 					    <div class="row">
 					        <div class="col-md-6 ">           
 							<form action="" method="post"> 
   							<p>Sukurti naują klasę</p>   
   							<input type="text" name= "klasesPavadinimas" class="form-control" placeholder="Įveskite klasės pavadinimą..."><br/>
-							<button type="submit" class="btn btn-info" name="save2">Pridėti naują</button>
+							<button type="submit" class="btn btn-success" name="save2">Pridėti naują</button>
 						</form>
 			        </div>
 
@@ -71,7 +71,7 @@ if (!$session->isAdministratorius()) {
 								><?php echo $row['klase'] ?></option><br/>
 							<?php }
 							
-							echo '<br/><input type="submit" class="btn btn-info" value="Ieškoti.."/>';
+							echo '<br/><input type="submit" class="btn btn-success" value="Ieškoti.."/>';
 							echo '</div>';
 						?>	
 						</select>
@@ -85,12 +85,12 @@ if (!$session->isAdministratorius()) {
 						<div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
- 						 <h2>Mokinių sąrašas</h2>
+ 						 <h2 style = "color:white;">Mokinių sąrašas</h2>
   							<p>Pasirinktos klasės mokinių sąrašas:</p>         
 							 <div class="row">
         						<div class="col-md-12">
            						<div class="panel-body">
-           						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
+           						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-1">Pridėti mokinį</button>
            						<div class=scroll style='overflow: auto;height: 250px; width: 950px;'>
                					<table class="table table-fixed table-hover table-striped table-bordered">
                					<thead>
@@ -204,7 +204,7 @@ if (!$session->isAdministratorius()) {
 								        <td><?php echo "<option value='".$row['pavarde']."'>".$row['pavarde']."</option>"; ?></td>
 								        <td><?php echo "<option value='".$row['klase']."'>".$row['klase']."</option>" ?></td>
 								        <td>								        
-									<a class="btn btn-outline btn-info openModal" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['id_Vartotojas']?>">
+									<a class="btn btn-outline btn-success openModal" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['id_Vartotojas']?>">
                    					<i class="fa fa-search-plus"></i>Peržiūrėti</a>
 											<div style="margin-top:5%;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 								    <div class="modal-dialog">
@@ -287,12 +287,12 @@ if (!$session->isAdministratorius()) {
                         <div class="row">
         				<div class="col-md-12">
            				<div class="panel-body">
-                        <h3>Importuoti mokinių sąrašą</h3>
+                        <h2 style = "color:white;">Importuoti mokinių sąrašą</h2>
 						<form method="post" enctype="multipart/form-data">					   
 						    <label>Pasirinkite CSV failą:</label>
 						    <input type="file" name="file" />
 						    <br />
-						    <input type="submit" name="submit8" value="Importuoti" class="btn btn-info" />			   
+						    <input type="submit" name="submit8" value="Importuoti" class="btn btn-success" />			   
 						  </form>
 						  </div>
 						  </div>

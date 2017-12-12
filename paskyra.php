@@ -1,3 +1,5 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <?php
 include("include/session.php");
 if ($session->logged_in) {
@@ -5,6 +7,7 @@ if ($session->logged_in) {
     <html>
         <head>
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"/> 
+              <legend></legend>
             <title>Paskyra</title>
             <link href="include/styles2.css" rel="stylesheet" type="text/css" />
         </head>
@@ -20,6 +23,7 @@ if ($session->logged_in) {
                         include("include/meniu.php");
                         ?>
 						<div style="text-align: center;color:white">
+                        <legend></legend>
 						<h1>Paskyros redagavimas</h1>
 						</div><br>
                         <?php
@@ -37,14 +41,18 @@ if ($session->logged_in) {
                             <table bgcolor=#C3FDB8 >
                                 <tr><td>
                                         <form action="process.php" style="text-align:left;" method="POST">
-                                            <p>Dabartinis slaptažodis:<br>
-                                                <input type="password" name="curpass" maxlength="30" size="25" value="<?php echo $form->value("curpass"); ?>">
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Dabartinis slaptažodis:</label>
+                                                    <input type="password" class="form-control" name="curpass" maxlength="30" size="25" value="<?php echo $form->value("curpass"); ?>">
                                                 <br><?php echo $form->error("curpass"); ?></p>
-                                            <p>Naujas slaptažodis:<br>
-                                                <input type="password" name="newpass" maxlength="30" size="25" value="<?php echo $form->value("newpass"); ?>">
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label for="recipient-name" class="form-control-label">Naujas slaptažodis:</label>
+                                                    <input type="password" class="form-control" name="newpass" maxlength="30" size="25" value="<?php echo $form->value("newpass"); ?>">
                                                 <br><?php echo $form->error("newpass"); ?></p>
+                                                  </div>
                                             <input type="hidden" name="subedit" value="1">
-                                            <input type="submit" value="Atnaujinti">
+                                            <input type="submit" class="btn btn-success" value="Atnaujinti">
                                         </form>
                                     </td></tr>
                             </table>

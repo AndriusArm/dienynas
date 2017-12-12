@@ -15,7 +15,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #222222;
 }
 
 li {
@@ -37,12 +37,11 @@ li a:hover:not(.active) {
 .active {
     background-color: #4CAF50}
 
-
-
 </style>
-</head>
-<body>
+        <body>     
 
+  <legend></legend>
+  <h1 style = "text-align: center;color:white;">Administratoriaus sąsaja</h1>
 <ul>
   <li><a class = "active" href="vartotojai.php">Vartotojų peržiūra</a></li>
   <li><a href="tvarkarastis.php">Tvarkaraščio redagavimas</a></li>
@@ -51,6 +50,7 @@ li a:hover:not(.active) {
 
 
 </body>
+
 </html>
 
     <?php

@@ -12,6 +12,7 @@ if ($session->logged_in) {
             <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <style> 
 
+
 input[type=text] {
     width: 100%;
     padding: 12px 20px;
@@ -45,6 +46,7 @@ input[type=button], input[type=submit], input[type=reset] {
     cursor: pointer;
     width: 100%;
 }
+
 .beta table {
     border-collapse: collapse;
     width: 100%;
@@ -61,6 +63,7 @@ input[type=button], input[type=submit], input[type=reset] {
     background-color: #4CAF50;
     color: white;
 }
+
 
 </style>
 <script>
@@ -190,7 +193,9 @@ function getId(val) {
                 }
                 ?>
                
-  
+  <legend></legend>
+ 
+  <h1 style = "color:white;">Žinučių valdymas</h1>
             <div class="tab">
 			 <button class="tablinks" onclick="openMessages(event, 'newMessage')" id="new">Nauja žinutė</button>
 			 <button class="tablinks" onclick="openMessages(event, 'receivedMessages')"
