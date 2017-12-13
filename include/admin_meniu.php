@@ -70,10 +70,12 @@ li a:hover:not(.active) {
 
   <legend></legend>
   <h1 style = "text-align: center;color:white;">Administratoriaus sąsaja</h1>
-<ul class="hmenu">
-  <li><a href="vartotojai.php">Vartotojų peržiūra</a></li>
-  <li><a href="tvarkarastis.php">Tvarkaraščio redagavimas</a></li>
-  <li><a href="pamokos.php">Pamokų redagavimas</a></li>
+<ul class="hmenu"><?php
+$active = "class=\"active\"";
+  echo "<li><a href=\"vartotojai.php\" ". (strpos($session->url, "vartotojai.php")?  $active : '')."\">Vartotojų peržiūra</a></li>";
+  echo "<li><a href=\"tvarkarastis.php\" ".(strpos($session->url, "tvarkarastis.php")?  $active : '').">Tvarkaraščio redagavimas</a></li>";
+  echo "<li><a href=\"pamokos.php\" ".(strpos($session->url, "pamokos.php")?  $active : '').">Pamokų redagavimas</a></li>";
+  ?>
 </ul>
 
 
